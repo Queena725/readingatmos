@@ -18,126 +18,121 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const allArticles = document.querySelector("#allArticles");
+const searchInput = document.querySelector("#articleSearch");
+const searchButton = document.querySelector("#searchButton");
+
 let articlesData = [];
 
 async function fetchArticles() {
-  const querySnapshot = await getDocs(collection(db, "articles"));
+  try {
+    const querySnapshot = await getDocs(collection(db, "articles"));
 
-  articlesData = querySnapshot.docs.map((doc) => {
-    return {
+    articlesData = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data()
-    };
-  });
+    }));
 
-  renderPageArticles(articlesData);
-}
+    console.log("Firebase articles:", articlesData);
 
-function renderPageArticles(articles) {
-  const featuredContainer = document.querySelector("#featuredArticles");
-  const allContainer = document.querySelector("#allArticles");
-
-  // Homepage: show only 3 articles
-  if (featuredContainer) {
-    featuredContainer.innerHTML = "";
-
-    const featuredArticles = articles.slice(0, 3);
-
-    featuredArticles.forEach((article) => {
-      featuredContainer.appendChild(createArticleCard(article));
-    });
-  }
-
-  // Articles page: show all articles
-  if (allContainer) {
-    allContainer.innerHTML = "";
-
-    articles.forEach((article) => {
-      allContainer.appendChild(createArticleCard(article));
-    });
+    renderArticles(articlesData);
+  } catch (error) {
+    console.error("Error fetching articles:", error);
   }
 }
 
-function createArticleCard(article) {
-  const card = document.createElement("div");
-  card.classList.add("project-card", "article-card");
+function renderArticles(articles) {
+  if (!allArticles) {
+    console.error("No #allArticles section found.");
+    return;
+  }
 
-  const keywords = Array.isArray(article.keywords)
-    ? article.keywords.join(" • ")
-    : "";
+  allArticles.innerHTML = "";
 
-card.innerHTML = `
-  <div class="project-image-wrap article-image-wrap">
-    <img src="${article.image || ""}" alt="${article.title || "Article image"}" />
-  </div>
+  if (articles.length === 0) {
+    allArticles.innerHTML = `<p class="no-results">No articles found.</p>`;
+    return;
+  }
 
-  <div class="project-meta">
-    <span>${article.title || "Untitled Article"}</span>
-    <span>${article.category || ""} ${keywords ? "• " + keywords : ""}</span>
-  </div>
+  articles.forEach((article) => {
+    const card = document.createElement("article");
+    card.classList.add("article-card");
 
-  <p class="article-summary">${article.summary || ""}</p>
-`;
-  card.addEventListener("click", () => {
-    if (article.url) {
-      window.open(article.url, "_blank");
+    let keywords = "";
+
+    if (Array.isArray(article.keywords)) {
+      keywords = article.keywords.join(" • ");
+    } else if (typeof article.keywords === "string") {
+      keywords = article.keywords;
     }
 
-    applyLogoMood(article);
+    card.innerHTML = `
+      <div class="article-image-wrap">
+        <img src="${article.image || ""}" alt="${article.title || "Article image"}" />
+      </div>
+
+      <div class="article-content">
+        <p class="article-category">${article.category || ""}</p>
+        <h2>${article.title || "Untitled Article"}</h2>
+        <p class="article-date">${article.date || ""}</p>
+        <p class="article-summary">${article.summary || ""}</p>
+        <p class="article-keywords">${keywords}</p>
+        <a href="${article.url || "#"}" target="_blank">Read article</a>
+      </div>
+    `;
+
+    allArticles.appendChild(card);
+  });
+}
+
+function searchArticles() {
+  if (!searchInput) {
+    console.error("No #articleSearch input found.");
+    return;
+  }
+
+  const searchTerm = searchInput.value.toLowerCase().trim();
+
+  console.log("Searching for:", searchTerm);
+
+  const filteredArticles = articlesData.filter((article) => {
+    const title = article.title?.toLowerCase() || "";
+    const category = article.category?.toLowerCase() || "";
+    const summary = article.summary?.toLowerCase() || "";
+    const date = article.date?.toLowerCase() || "";
+    const author = article.author?.toLowerCase() || "";
+
+    let keywords = "";
+
+    if (Array.isArray(article.keywords)) {
+      keywords = article.keywords.join(" ").toLowerCase();
+    } else if (typeof article.keywords === "string") {
+      keywords = article.keywords.toLowerCase();
+    }
+
+    return (
+      title.includes(searchTerm) ||
+      category.includes(searchTerm) ||
+      summary.includes(searchTerm) ||
+      date.includes(searchTerm) ||
+      author.includes(searchTerm) ||
+      keywords.includes(searchTerm)
+    );
   });
 
-  return card;
+  renderArticles(filteredArticles);
 }
 
-function setupArticleSearch() {
-  const searchInput = document.querySelector("#articleSearch");
-  const searchButton = document.querySelector("#searchButton");
-
-  if (!searchInput) return;
-
-  function runSearch() {
-    const searchTerm = searchInput.value.toLowerCase().trim();
-
-    const filteredArticles = articlesData.filter((article) => {
-      const title = article.title?.toLowerCase() || "";
-      const category = article.category?.toLowerCase() || "";
-      const summary = article.summary?.toLowerCase() || "";
-      const keywords = Array.isArray(article.keywords)
-        ? article.keywords.join(" ").toLowerCase()
-        : "";
-
-      return (
-        title.includes(searchTerm) ||
-        category.includes(searchTerm) ||
-        summary.includes(searchTerm) ||
-        keywords.includes(searchTerm)
-      );
-    });
-
-    renderPageArticles(filteredArticles);
-  }
-
-  searchInput.addEventListener("input", runSearch);
-
-  if (searchButton) {
-    searchButton.addEventListener("click", runSearch);
-  }
+if (searchInput) {
+  searchInput.addEventListener("input", searchArticles);
+} else {
+  console.error("Search input not found.");
 }
 
-function applyLogoMood(article) {
-  const logoGroup = document.querySelector(".logo-group");
-
-  if (!logoGroup) return;
-
-  const scale = Number(article.logoScale) || 1;
-
-  logoGroup.setAttribute("transform", `translate(0 0) scale(${scale})`);
-
-  console.log("Article clicked:", article.title);
-  console.log("Logo mood:", article.logoMood);
-  console.log("Logo motion:", article.logoMotion);
+if (searchButton) {
+  searchButton.addEventListener("click", searchArticles);
+} else {
+  console.error("Search button not found.");
 }
 
-fetchArticles().then(() => {
-  setupArticleSearch();
-});
+fetchArticles();

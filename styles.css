@@ -1,3 +1,14 @@
+.article-card {
+  border: 1px solid black;
+  padding: 20px;
+  margin-bottom: 16px;
+  border-radius: 16px;
+}
+
+.article-card h2 {
+  margin: 0 0 8px;
+}
+
 :root {
   --bg: #f3f3f3;
   --black: #070100;
