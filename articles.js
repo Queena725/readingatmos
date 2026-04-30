@@ -140,6 +140,10 @@ function searchArticles() {
 
 }
 
+if (searchInput) {
+  searchInput.addEventListener("input", searchArticles);
+}
+
 if (searchButton && searchInput) {
   searchButton.addEventListener("click", () => {
     searchInput.classList.toggle("is-open");
