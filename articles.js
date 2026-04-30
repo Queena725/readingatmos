@@ -20,7 +20,7 @@ const db = getFirestore(app);
 
 const allArticles = document.querySelector("#allArticles");
 const searchInput = document.querySelector("#articleSearch");
-const searchButton = document.querySelector("#searchButton");
+const searchButton = document.querySelector("#topSearchButton");
 
 let articlesData = [];
 
@@ -128,8 +128,17 @@ if (searchInput) {
   searchInput.addEventListener("input", searchArticles);
 }
 
-if (searchButton) {
-  searchButton.addEventListener("click", searchArticles);
+if (searchButton && searchInput) {
+  searchButton.addEventListener("click", () => {
+    searchInput.classList.toggle("is-open");
+
+    if (searchInput.classList.contains("is-open")) {
+      searchInput.focus();
+    } else {
+      searchInput.value = "";
+      renderArticles(articlesData);
+    }
+  });
 }
 
 fetchArticles();
