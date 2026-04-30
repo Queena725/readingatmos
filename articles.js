@@ -34,7 +34,6 @@ async function fetchArticles() {
     }));
 
     console.log("Firebase articles loaded:", articlesData);
-
     renderArticles(articlesData);
   } catch (error) {
     console.error("Error fetching articles:", error);
