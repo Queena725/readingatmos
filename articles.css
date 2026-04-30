@@ -244,3 +244,14 @@ main {
     width: 100px;
   }
 }
+
+
+/* Final title override */
+.articles-header h1 {
+  margin: 0 !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+  color: rgba(0, 0, 0, 0.38) !important;
+  letter-spacing: 0.02em !important;
+}
