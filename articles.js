@@ -119,6 +119,9 @@ card.addEventListener("mouseleave", () => {
 
 allArticles.appendChild(card);
 
+  });
+} 
+
 
 function searchArticles() {
   if (!searchInput) {
