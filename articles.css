@@ -121,18 +121,23 @@ body {
 
 /* Article grid */
 
+/* FINAL LAYOUT OVERRIDE */
+
 .articles-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 24px !important;
+  align-items: start;
 }
 
 .article-card {
-  cursor: pointer;
+  width: 100% !important;
+  max-width: none !important;
 }
 
 .article-image-wrap {
-  width: 100%;
+  width: 100% !important;
   aspect-ratio: 4 / 3;
   overflow: hidden;
   border-radius: 0;
@@ -141,11 +146,21 @@ body {
 }
 
 .article-image-wrap img {
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: 100% !important;
   object-fit: cover;
   display: block;
 }
+
+.articles-header {
+  width: 100%;
+  max-width: none;
+}
+
+main {
+  width: 100%;
+}
+
 
 /* Article text */
 
