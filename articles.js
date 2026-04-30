@@ -68,7 +68,7 @@ function renderArticles(articles) {
 
     card.innerHTML = `
       <div class="article-image-wrap">
-        <img src="${article.images || ""}" alt="${article.title || "Article image"}" />
+       <img src="${article.images || article.image || ""}" alt="${article.title || "Article image"}" />
       </div>
 
       <div class="article-content">
