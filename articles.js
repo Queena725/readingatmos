@@ -66,10 +66,14 @@ function renderArticles(articles) {
       keywords = article.keywords;
     }
 
-    card.innerHTML = `
-      <div class="article-image-wrap">
-       <img src="${article.images || article.image || ""}" alt="${article.title || "Article image"}" />
-      </div>
+
+const imagePath = article.images || article.image || "";
+const fixedImagePath = imagePath.startsWith("http") ? imagePath : `./${imagePath}`;
+
+card.innerHTML = `
+  <div class="article-image-wrap">
+    <img src="${fixedImagePath}" alt="${article.title || "Article image"}" />
+  </div>
 
       <div class="article-content">
         <p class="article-category">${article.category || ""}</p>
