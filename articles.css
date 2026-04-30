@@ -24,6 +24,13 @@ body {
   border-bottom: 1px solid black;
 }
 
+.topbar-search-input:focus,
+.search-wrap input:focus,
+button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 .topbar-left {
   justify-self: start;
   color: black;
@@ -80,7 +87,7 @@ body {
 
 .articles-header h1 {
   margin: 0;
-  font-size: 13px;
+  font-size: 8px;
   font-weight: 400;
   line-height: 1;
   color: rgba(0, 0, 0, 0.38);

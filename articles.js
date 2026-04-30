@@ -124,21 +124,25 @@ function searchArticles() {
   renderArticles(filteredArticles);
 }
 
-if (searchInput) {
-  searchInput.addEventListener("input", searchArticles);
-}
-
 if (searchButton && searchInput) {
   searchButton.addEventListener("click", () => {
     searchInput.classList.toggle("is-open");
 
     if (searchInput.classList.contains("is-open")) {
+      searchButton.style.display = "none";
       searchInput.focus();
-    } else {
-      searchInput.value = "";
-      renderArticles(articlesData);
     }
   });
 }
 
+if (searchInput) {
+  searchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      searchInput.classList.remove("is-open");
+      searchInput.value = "";
+      searchButton.style.display = "inline";
+      renderArticles(articlesData);
+    }
+  });
+}
 fetchArticles();
