@@ -25,6 +25,9 @@ const searchInput = document.querySelector("#articleSearch");
 const searchButton = document.querySelector("#searchButton");
 
 let articlesData = [];
+const logoCache = {};
+
+/* Fetch article data */
 
 async function fetchArticles() {
   try {
@@ -36,13 +39,13 @@ async function fetchArticles() {
     }));
 
     console.log("Firebase articles:", articlesData);
-
     renderArticles(articlesData);
   } catch (error) {
     console.error("Error fetching articles:", error);
   }
 }
-const logoCache = {};
+
+/* Fetch logo data from logos collection */
 
 async function getLogoData(logoId) {
   if (!logoId) return null;
@@ -64,6 +67,8 @@ async function getLogoData(logoId) {
 
   return logoData;
 }
+
+/* Render articles */
 
 function renderArticles(articles) {
   if (!allArticles) {
@@ -90,38 +95,39 @@ function renderArticles(articles) {
       keywords = article.keywords;
     }
 
+    const imagePath = article.images || article.image || "";
+    const fixedImagePath = imagePath.startsWith("http")
+      ? imagePath
+      : `./${imagePath}`;
 
-const imagePath = article.images || article.image || "";
-const fixedImagePath = imagePath.startsWith("http") ? imagePath : `./${imagePath}`;
+    card.innerHTML = `
+      <div class="article-image-wrap">
+        <img src="${fixedImagePath}" alt="${article.title || "Article image"}" />
+      </div>
 
-card.innerHTML = `
-  <div class="article-image-wrap">
-    <img src="${fixedImagePath}" alt="${article.title || "Article image"}" />
-  </div>
+      <div class="article-content">
+        <p class="article-category">${article.category || ""}</p>
+        <h2>${article.title || "Untitled Article"}</h2>
+        <p class="article-date">${article.date || ""}</p>
+        <p class="article-summary">${article.summary || ""}</p>
+        <p class="article-keywords">${keywords}</p>
+        <a href="${article.url || "#"}" target="_blank">Read article</a>
+      </div>
+    `;
 
-  <div class="article-content">
-    <p class="article-category">${article.category || ""}</p>
-    <h2>${article.title || "Untitled Article"}</h2>
-    <p class="article-date">${article.date || ""}</p>
-    <p class="article-summary">${article.summary || ""}</p>
-    <p class="article-keywords">${keywords}</p>
-    <a href="${article.url || "#"}" target="_blank">Read article</a>
-  </div>
-`;
+    card.addEventListener("mouseenter", () => {
+      updateArchiveLogo(article);
+    });
 
-card.addEventListener("mouseenter", () => {
-  updateArchiveLogo(article);
-});
+    card.addEventListener("mouseleave", () => {
+      resetArchiveLogo();
+    });
 
-card.addEventListener("mouseleave", () => {
-  resetArchiveLogo();
-});
-
-allArticles.appendChild(card);
-
+    allArticles.appendChild(card);
   });
-} 
+}
 
+/* Search articles */
 
 function searchArticles() {
   if (!searchInput) {
@@ -130,8 +136,6 @@ function searchArticles() {
   }
 
   const searchTerm = searchInput.value.toLowerCase().trim();
-
-  console.log("Searching for:", searchTerm);
 
   const filteredArticles = articlesData.filter((article) => {
     const title = article.title?.toLowerCase() || "";
@@ -161,55 +165,7 @@ function searchArticles() {
   renderArticles(filteredArticles);
 }
 
-if (searchInput) {
-  searchInput.addEventListener("input", searchArticles);
-} else {
-  console.error("Search input not found.");
-}
-
-if (searchButton) {
-  searchButton.addEventListener("click", searchArticles);
-} else {
-  console.error("Search button not found.");
-}
-
-fetchArticles();
-
-
-async function updateArchiveLogo(article) {
-  const logoText = document.querySelector("#archiveLogoText");
-  const logoImage = document.querySelector("#archiveLogoImage");
-
-  if (!logoText || !logoImage) return;
-
-  const logoId = analyzeArticleForLogo(article);
-  const logoData = await getLogoData(logoId);
-
-  if (!logoData || !logoData.file) {
-    return;
-  }
-
-  logoImage.classList.add("is-changing");
-
-  setTimeout(() => {
-    logoText.style.display = "none";
-    logoImage.style.display = "block";
-    logoImage.src = `./${logoData.file}`;
-    logoImage.classList.remove("is-changing");
-  }, 120);
-}
-
-function resetArchiveLogo() {
-  const logoText = document.querySelector("#archiveLogoText");
-  const logoImage = document.querySelector("#archiveLogoImage");
-
-  if (!logoText || !logoImage) return;
-
-  logoImage.style.display = "none";
-  logoImage.src = "";
-  logoText.style.display = "inline";
-}
-
+/* Logo analysis */
 
 function analyzeArticleForLogo(article) {
   const keywords = Array.isArray(article.keywords)
@@ -293,3 +249,52 @@ function analyzeArticleForLogo(article) {
 
   return "logo2";
 }
+
+/* Logo hover update */
+
+async function updateArchiveLogo(article) {
+  const logoText = document.querySelector("#archiveLogoText");
+  const logoImage = document.querySelector("#archiveLogoImage");
+
+  if (!logoText || !logoImage) return;
+
+  const logoId = analyzeArticleForLogo(article);
+  const logoData = await getLogoData(logoId);
+
+  if (!logoData || !logoData.file) {
+    console.warn("Missing logo file for:", logoId);
+    return;
+  }
+
+  logoImage.classList.add("is-changing");
+
+  setTimeout(() => {
+    logoText.style.display = "none";
+    logoImage.style.display = "block";
+    logoImage.src = `./${logoData.file}`;
+    logoImage.classList.remove("is-changing");
+  }, 120);
+}
+
+function resetArchiveLogo() {
+  const logoText = document.querySelector("#archiveLogoText");
+  const logoImage = document.querySelector("#archiveLogoImage");
+
+  if (!logoText || !logoImage) return;
+
+  logoImage.style.display = "none";
+  logoImage.src = "";
+  logoText.style.display = "inline";
+}
+
+/* Event listeners */
+
+if (searchInput) {
+  searchInput.addEventListener("input", searchArticles);
+}
+
+if (searchButton) {
+  searchButton.addEventListener("click", searchArticles);
+}
+
+fetchArticles();
