@@ -66,8 +66,8 @@ button:focus {
 
 #archiveLogoImage {
   display: none;
-  width: 74px;
-  max-height: 38px;
+  width: 90px;
+  max-height: 42px;
   object-fit: contain;
   transition: opacity 0.2s ease, transform 0.25s ease;
 }

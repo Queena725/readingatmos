@@ -2,7 +2,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/fireba
 import {
   getFirestore,
   collection,
-  getDocs
+  getDocs,
+  doc,
+  getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -23,6 +25,7 @@ const searchInput = document.querySelector("#articleSearch");
 const searchButton = document.querySelector("#topSearchButton");
 
 let articlesData = [];
+const logoCache = {};
 
 async function fetchArticles() {
   try {
@@ -70,22 +73,32 @@ function renderArticles(articles) {
       ? imagePath
       : `./${imagePath}`;
 
-    card.innerHTML = `
-      <div class="article-image-wrap">
-        <img src="${fixedImagePath}" alt="${article.title || "Article image"}" />
-      </div>
+card.innerHTML = `
+  <div class="article-image-wrap">
+    <img src="${fixedImagePath}" alt="${article.title || "Article image"}" />
+  </div>
 
-      <div class="article-content">
-        <p class="article-category">${article.category || ""}</p>
-        <h2>${article.title || "Untitled Article"}</h2>
-        <p class="article-date">${article.date || ""}</p>
-        <p class="article-summary">${article.summary || ""}</p>
-        <p class="article-keywords">${keywords}</p>
-        <a href="${article.url || "#"}" target="_blank">Read article</a>
-      </div>
-    `;
+  <div class="article-content">
+    <p class="article-category">${article.category || ""}</p>
+    <h2>${article.title || "Untitled Article"}</h2>
+    <p class="article-date">${article.date || ""}</p>
+    <p class="article-summary">${article.summary || ""}</p>
+    <p class="article-keywords">${keywords}</p>
+    <a href="${article.url || "#"}" target="_blank">Read article</a>
+  </div>
+`;
 
-    allArticles.appendChild(card);
+card.addEventListener("mouseenter", () => {
+  updateArchiveLogo(article);
+});
+
+card.addEventListener("mouseleave", () => {
+  resetArchiveLogo();
+});
+
+allArticles.appendChild(card);
+
+
   });
 }
 
@@ -122,6 +135,9 @@ function searchArticles() {
   });
 
   renderArticles(filteredArticles);
+
+
+
 }
 
 if (searchButton && searchInput) {
@@ -145,4 +161,140 @@ if (searchInput) {
     }
   });
 }
+
+
+function analyzeArticleForLogo(article) {
+  const keywords = Array.isArray(article.keywords)
+    ? article.keywords.join(" ").toLowerCase()
+    : "";
+
+  const text = `
+    ${article.title || ""}
+    ${article.category || ""}
+    ${article.summary || ""}
+    ${keywords}
+  `.toLowerCase();
+
+  if (
+    text.includes("chance") ||
+    text.includes("origin") ||
+    text.includes("improbable") ||
+    text.includes("unknown") ||
+    text.includes("possibility")
+  ) {
+    return "logo1";
+  }
+
+  if (
+    text.includes("void") ||
+    text.includes("loss") ||
+    text.includes("grief") ||
+    text.includes("mourning") ||
+    text.includes("fragile")
+  ) {
+    return "logo3";
+  }
+
+  if (
+    text.includes("memory") ||
+    text.includes("love") ||
+    text.includes("healing") ||
+    text.includes("kinship") ||
+    text.includes("care")
+  ) {
+    return "logo4";
+  }
+
+  if (
+    text.includes("process") ||
+    text.includes("biology") ||
+    text.includes("evolution") ||
+    text.includes("transformation") ||
+    text.includes("becoming")
+  ) {
+    return "logo5";
+  }
+
+  if (
+    text.includes("mimicry") ||
+    text.includes("imitation") ||
+    text.includes("adaptation")
+  ) {
+    return "logo6";
+  }
+
+  if (
+    text.includes("science") ||
+    text.includes("poetry") ||
+    text.includes("wonder") ||
+    text.includes("awe") ||
+    text.includes("rainbow")
+  ) {
+    return "logo7";
+  }
+
+  if (
+    text.includes("botanical") ||
+    text.includes("flower") ||
+    text.includes("growth") ||
+    text.includes("renewal") ||
+    text.includes("life")
+  ) {
+    return "logo8";
+  }
+
+  return "logo2";
+}
+
+async function updateArchiveLogo(article) {
+  const logoText = document.querySelector("#archiveLogoText");
+  const logoImage = document.querySelector("#archiveLogoImage");
+
+  if (!logoText || !logoImage) return;
+
+  const logoId = analyzeArticleForLogo(article);
+  const logoData = await getLogoData(logoId);
+
+  if (!logoData || !logoData.file) {
+    console.warn("Missing logo file for:", logoId);
+    return;
+  }
+
+  logoText.style.display = "none";
+  logoImage.style.display = "block";
+  logoImage.src = `./${logoData.file}`;
+}
+
+function resetArchiveLogo() {
+  const logoText = document.querySelector("#archiveLogoText");
+  const logoImage = document.querySelector("#archiveLogoImage");
+
+  if (!logoText || !logoImage) return;
+
+  logoImage.style.display = "none";
+  logoImage.src = "";
+  logoText.style.display = "inline";
+}
+
 fetchArticles();
+
+async function getLogoData(logoId) {
+  if (!logoId) return null;
+
+  if (logoCache[logoId]) {
+    return logoCache[logoId];
+  }
+
+  const logoRef = doc(db, "logos", logoId);
+  const logoSnap = await getDoc(logoRef);
+
+  if (!logoSnap.exists()) {
+    console.warn("No logo found for:", logoId);
+    return null;
+  }
+
+  const logoData = logoSnap.data();
+  logoCache[logoId] = logoData;
+
+  return logoData;
+}
