@@ -23,9 +23,13 @@ const db = getFirestore(app);
 const allArticles = document.querySelector("#allArticles");
 const searchInput = document.querySelector("#articleSearch");
 const searchButton = document.querySelector("#topSearchButton");
+const logoText = document.querySelector("#archiveLogoText");
+const logoImage = document.querySelector("#archiveLogoImage");
 
 let articlesData = [];
 const logoCache = {};
+
+/* Fetch articles */
 
 async function fetchArticles() {
   try {
@@ -42,6 +46,31 @@ async function fetchArticles() {
     console.error("Error fetching articles:", error);
   }
 }
+
+/* Fetch logo data from Firebase collection: logo */
+
+async function getLogoData(logoId) {
+  if (!logoId) return null;
+
+  if (logoCache[logoId]) {
+    return logoCache[logoId];
+  }
+
+  const logoRef = doc(db, "logo", logoId);
+  const logoSnap = await getDoc(logoRef);
+
+  if (!logoSnap.exists()) {
+    console.warn("No logo found for:", logoId);
+    return null;
+  }
+
+  const logoData = logoSnap.data();
+  logoCache[logoId] = logoData;
+
+  return logoData;
+}
+
+/* Render articles */
 
 function renderArticles(articles) {
   if (!allArticles) {
@@ -73,38 +102,38 @@ function renderArticles(articles) {
       ? imagePath
       : `./${imagePath}`;
 
-card.innerHTML = `
-  <div class="article-image-wrap">
-    <img src="${fixedImagePath}" alt="${article.title || "Article image"}" />
-  </div>
+    card.innerHTML = `
+      <div class="article-image-wrap">
+        <img src="${fixedImagePath}" alt="${article.title || "Article image"}" />
+      </div>
 
-  <div class="article-content">
-    <p class="article-category">${article.category || ""}</p>
-    <h2>${article.title || "Untitled Article"}</h2>
-    <p class="article-date">${article.date || ""}</p>
-    <p class="article-summary">${article.summary || ""}</p>
-    <p class="article-keywords">${keywords}</p>
-    <a href="${article.url || "#"}" target="_blank">Read article</a>
-  </div>
-`;
+      <div class="article-content">
+        <p class="article-category">${article.category || ""}</p>
+        <h2>${article.title || "Untitled Article"}</h2>
+        <p class="article-date">${article.date || ""}</p>
+        <p class="article-summary">${article.summary || ""}</p>
+        <p class="article-keywords">${keywords}</p>
+        <a href="${article.url || "#"}" target="_blank">Read article</a>
+      </div>
+    `;
 
-card.addEventListener("pointerenter", () => {
-  updateArchiveLogo(article);
-});
+    card.addEventListener("pointerenter", () => {
+      updateArchiveLogo(article);
+    });
 
-card.addEventListener("pointerleave", () => {
-  resetArchiveLogo();
-});
+    card.addEventListener("pointerleave", () => {
+      resetArchiveLogo();
+    });
 
-card.addEventListener("click", () => {
-  updateArchiveLogo(article);
-});
+    card.addEventListener("click", () => {
+      updateArchiveLogo(article);
+    });
 
-allArticles.appendChild(card);
-
-
+    allArticles.appendChild(card);
   });
 }
+
+/* Search */
 
 function searchArticles() {
   if (!searchInput) return;
@@ -139,36 +168,9 @@ function searchArticles() {
   });
 
   renderArticles(filteredArticles);
-
 }
 
-if (searchInput) {
-  searchInput.addEventListener("input", searchArticles);
-}
-
-if (searchButton && searchInput) {
-  searchButton.addEventListener("click", () => {
-    searchInput.classList.toggle("is-open");
-
-    if (searchInput.classList.contains("is-open")) {
-      searchButton.style.display = "none";
-      searchInput.focus();
-    }
-  });
-}
-
-if (searchInput) {
-  searchInput.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      searchInput.classList.remove("is-open");
-      searchInput.value = "";
-      searchButton.style.display = "inline";
-      renderArticles(articlesData);
-    }
-  });
-}
-
-
+/* Logo selection */
 
 function analyzeArticleForLogo(article) {
   if (article.logoId) {
@@ -257,33 +259,46 @@ function analyzeArticleForLogo(article) {
   return "logo2";
 }
 
-async function updateArchiveLogo(article) {
-  const logoText = document.querySelector("#archiveLogoText");
-  const logoImage = document.querySelector("#archiveLogoImage");
+/* Logo hover behavior */
 
+async function updateArchiveLogo(article) {
   if (!logoText || !logoImage) return;
 
   const logoId = article.logoId || analyzeArticleForLogo(article);
-  const logoData = await getLogoData(logoId);
 
-  console.log("Hovered article:", article.title);
+  console.log("HOVER WORKS:", article.title);
   console.log("Using logoId:", logoId);
+
+  const logoData = await getLogoData(logoId);
   console.log("Logo data:", logoData);
 
-  if (!logoData || !logoData.file) {
-    console.warn("Missing logo file for:", logoId);
-    return;
+  let logoFile = "";
+
+  if (logoData && logoData.file) {
+    logoFile = logoData.file;
+  } else {
+    logoFile = `images/${logoId}.svg`;
   }
 
-  logoText.style.display = "none";
-  logoImage.style.display = "block";
-  logoImage.src = `./${logoData.file}`;
+  if (logoId === "logo7") {
+    logoFile = "images/logo7.png";
+  }
+
+  logoImage.onload = () => {
+    logoText.style.display = "none";
+    logoImage.style.display = "block";
+  };
+
+  logoImage.onerror = () => {
+    console.warn("Logo image failed to load:", logoFile);
+    logoImage.style.display = "none";
+    logoText.style.display = "inline";
+  };
+
+  logoImage.src = `./${logoFile}`;
 }
 
 function resetArchiveLogo() {
-  const logoText = document.querySelector("#archiveLogoText");
-  const logoImage = document.querySelector("#archiveLogoImage");
-
   if (!logoText || !logoImage) return;
 
   logoImage.style.display = "none";
@@ -291,25 +306,31 @@ function resetArchiveLogo() {
   logoText.style.display = "inline";
 }
 
-fetchArticles();
+/* Topbar search behavior */
 
-async function getLogoData(logoId) {
-  if (!logoId) return null;
+if (searchInput) {
+  searchInput.addEventListener("input", searchArticles);
 
-  if (logoCache[logoId]) {
-    return logoCache[logoId];
-  }
+  searchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      searchInput.classList.remove("is-open");
+      searchInput.value = "";
 
-  const logoRef = doc(db, "logo", logoId);
-  const logoSnap = await getDoc(logoRef);
+      if (searchButton) {
+        searchButton.style.display = "inline";
+      }
 
-  if (!logoSnap.exists()) {
-    console.warn("No logo found for:", logoId);
-    return null;
-  }
-
-  const logoData = logoSnap.data();
-  logoCache[logoId] = logoData;
-
-  return logoData;
+      renderArticles(articlesData);
+    }
+  });
 }
+
+if (searchButton && searchInput) {
+  searchButton.addEventListener("click", () => {
+    searchInput.classList.add("is-open");
+    searchButton.style.display = "none";
+    searchInput.focus();
+  });
+}
+
+fetchArticles();
