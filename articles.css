@@ -255,3 +255,25 @@ main {
   color: rgba(0, 0, 0, 0.38) !important;
   letter-spacing: 0.02em !important;
 }
+
+
+
+.article-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+
+.keyword-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: black;
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+}

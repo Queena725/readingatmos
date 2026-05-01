@@ -89,13 +89,21 @@ function renderArticles(articles) {
     const card = document.createElement("article");
     card.classList.add("article-card");
 
+
+
+
     let keywords = "";
 
-    if (Array.isArray(article.keywords)) {
-      keywords = article.keywords.join(" • ");
-    } else if (typeof article.keywords === "string") {
-      keywords = article.keywords;
-    }
+if (Array.isArray(article.keywords)) {
+  keywords = article.keywords
+    .map((keyword) => `<span class="keyword-pill">${keyword}</span>`)
+    .join("");
+} else if (typeof article.keywords === "string") {
+  keywords = `<span class="keyword-pill">${article.keywords}</span>`;
+}
+
+
+
 
     const imagePath = article.images || article.image || "";
     const fixedImagePath = imagePath.startsWith("http")
