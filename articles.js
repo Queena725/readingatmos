@@ -140,8 +140,6 @@ function searchArticles() {
 
   renderArticles(filteredArticles);
 
-
-
 }
 
 if (searchInput) {
@@ -281,6 +279,7 @@ async function updateArchiveLogo(article) {
   logoImage.style.display = "block";
   logoImage.src = `./${logoData.file}`;
 }
+
 function resetArchiveLogo() {
   const logoText = document.querySelector("#archiveLogoText");
   const logoImage = document.querySelector("#archiveLogoImage");
@@ -301,7 +300,7 @@ async function getLogoData(logoId) {
     return logoCache[logoId];
   }
 
-  const logoRef = doc(db, "logos", logoId);
+  const logoRef = doc(db, "logo", logoId);
   const logoSnap = await getDoc(logoRef);
 
   if (!logoSnap.exists()) {
