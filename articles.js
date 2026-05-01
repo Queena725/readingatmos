@@ -88,12 +88,16 @@ card.innerHTML = `
   </div>
 `;
 
-card.addEventListener("mouseenter", () => {
+card.addEventListener("pointerenter", () => {
   updateArchiveLogo(article);
 });
 
-card.addEventListener("mouseleave", () => {
+card.addEventListener("pointerleave", () => {
   resetArchiveLogo();
+});
+
+card.addEventListener("click", () => {
+  updateArchiveLogo(article);
 });
 
 allArticles.appendChild(card);
@@ -167,7 +171,12 @@ if (searchInput) {
 }
 
 
+
 function analyzeArticleForLogo(article) {
+  if (article.logoId) {
+    return article.logoId;
+  }
+
   const keywords = Array.isArray(article.keywords)
     ? article.keywords.join(" ").toLowerCase()
     : "";
@@ -256,8 +265,12 @@ async function updateArchiveLogo(article) {
 
   if (!logoText || !logoImage) return;
 
-  const logoId = analyzeArticleForLogo(article);
+  const logoId = article.logoId || analyzeArticleForLogo(article);
   const logoData = await getLogoData(logoId);
+
+  console.log("Hovered article:", article.title);
+  console.log("Using logoId:", logoId);
+  console.log("Logo data:", logoData);
 
   if (!logoData || !logoData.file) {
     console.warn("Missing logo file for:", logoId);
@@ -268,7 +281,6 @@ async function updateArchiveLogo(article) {
   logoImage.style.display = "block";
   logoImage.src = `./${logoData.file}`;
 }
-
 function resetArchiveLogo() {
   const logoText = document.querySelector("#archiveLogoText");
   const logoImage = document.querySelector("#archiveLogoImage");
