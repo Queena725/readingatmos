@@ -277,12 +277,10 @@ async function updateArchiveLogo(article) {
   if (logoData && logoData.file) {
     logoFile = logoData.file;
   } else {
-    logoFile = `images/${logoId}.svg`;
+    logoFile = `images/${logoId}.png`;
   }
 
-  if (logoId === "logo7") {
-    logoFile = "images/logo7.png";
-  }
+ 
 
   logoImage.onload = () => {
     logoText.style.display = "none";
