@@ -107,6 +107,14 @@ async function saveArticleViewInteraction(article) {
   }
 }
 
+function setLastOpenedCard(activeCard) {
+  document.querySelectorAll(".article-card").forEach((item) => {
+    item.classList.remove("is-last-opened");
+  });
+
+  activeCard.classList.add("is-last-opened");
+}
+
 /* Fetch logo data from Firebase collection: logo */
 
 async function getLogoData(logoId) {
@@ -176,6 +184,7 @@ if (Array.isArray(article.keywords)) {
       </div>
 
       <div class="article-content">
+        <p class="article-last-opened-label">Last opened</p>
         <p class="article-category">${article.category || ""}</p>
         <h2>${article.title || "Untitled Article"}</h2>
         <p class="article-date">${article.date || ""}</p>
@@ -189,18 +198,15 @@ if (Array.isArray(article.keywords)) {
 
     if (readArticleLink) {
       readArticleLink.addEventListener("click", () => {
+        setLastOpenedCard(card);
         saveArticleViewInteraction(article);
       });
     }
 
-card.addEventListener("click", () => {
-  document.querySelectorAll(".article-card").forEach((item) => {
-    item.classList.remove("is-last-opened");
-  });
-
-  card.classList.add("is-last-opened");
-  updateArchiveLogo(article);
-});
+    card.addEventListener("click", () => {
+      setLastOpenedCard(card);
+      updateArchiveLogo(article);
+    });
     allArticles.appendChild(card);
   });
 }

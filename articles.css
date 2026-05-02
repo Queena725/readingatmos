@@ -299,6 +299,16 @@ main {
   opacity: 0.6;
 }
 
+.article-last-opened-label {
+  display: none;
+  margin: 0 0 10px;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: rgba(0, 0, 0, 0.45);
+  text-transform: uppercase;
+}
+
 .no-results {
   font-size: 18px;
 }
@@ -399,15 +409,23 @@ main {
 }
 
 
-.article-card.is-last-opened .article-content {
-  color: rgba(0, 0, 0, 0.35);
+.article-card.is-last-opened .article-last-opened-label {
+  display: block;
+}
+
+.article-card.is-last-opened .article-category,
+.article-card.is-last-opened .article-content h2,
+.article-card.is-last-opened .article-date,
+.article-card.is-last-opened .article-summary,
+.article-card.is-last-opened .article-keywords {
+  color: rgba(0, 0, 0, 0.38);
 }
 
 .article-card.is-last-opened .keyword-pill {
-  background: #eeeeee;
-  color: rgba(0, 0, 0, 0.35);
+  background: #efefef;
+  color: rgba(0, 0, 0, 0.38);
 }
 
-.article-card.is-last-opened img {
-  opacity: 0.45;
+.article-card.is-last-opened .article-image-wrap img {
+  opacity: 0.5;
 }
