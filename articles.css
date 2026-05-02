@@ -288,3 +288,42 @@ main {
   line-height: 1;
   white-space: nowrap;
 }
+
+
+#archiveLogoImage.logo-glow {
+  animation: logoGlow 0.9s ease;
+}
+
+@keyframes logoGlow {
+  0% {
+    opacity: 0.25;
+    transform: scale(0.92);
+    filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+  }
+
+  45% {
+    opacity: 1;
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 14px rgba(0, 0, 0, 0.45));
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+  }
+}
+
+
+.article-card.is-last-opened .article-content {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.article-card.is-last-opened .keyword-pill {
+  background: #eeeeee;
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.article-card.is-last-opened img {
+  opacity: 0.45;
+}

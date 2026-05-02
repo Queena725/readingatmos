@@ -125,18 +125,14 @@ if (Array.isArray(article.keywords)) {
       </div>
     `;
 
-    card.addEventListener("pointerenter", () => {
-      updateArchiveLogo(article);
-    });
+card.addEventListener("click", () => {
+  document.querySelectorAll(".article-card").forEach((item) => {
+    item.classList.remove("is-last-opened");
+  });
 
-    card.addEventListener("pointerleave", () => {
-      resetArchiveLogo();
-    });
-
-    card.addEventListener("click", () => {
-      updateArchiveLogo(article);
-    });
-
+  card.classList.add("is-last-opened");
+  updateArchiveLogo(article);
+});
     allArticles.appendChild(card);
   });
 }
@@ -290,10 +286,14 @@ async function updateArchiveLogo(article) {
 
  
 
-  logoImage.onload = () => {
-    logoText.style.display = "none";
-    logoImage.style.display = "block";
-  };
+logoImage.onload = () => {
+  logoText.style.display = "none";
+  logoImage.style.display = "block";
+
+  logoImage.classList.remove("logo-glow");
+  void logoImage.offsetWidth;
+  logoImage.classList.add("logo-glow");
+};
 
   logoImage.onerror = () => {
     console.warn("Logo image failed to load:", logoFile);
