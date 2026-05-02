@@ -127,6 +127,8 @@ button:focus {
   background: white;
   font: inherit;
   font-size: 14px;
+  color: black;
+  caret-color: black;
 }
 
 .topbar-search-input.is-open {
