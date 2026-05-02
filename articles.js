@@ -3,8 +3,10 @@ import {
   getFirestore,
   collection,
   getDocs,
+  addDoc,
   doc,
-  getDoc
+  getDoc,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -33,6 +35,7 @@ let articlesData = [];
 const logoCache = {};
 const SEARCH_HISTORY_KEY = "readingAtmosSearchHistory";
 const SEARCH_HISTORY_LIMIT = 5;
+const SESSION_ID_KEY = "readingAtmosSessionId";
 
 /* Fetch articles */
 
@@ -49,6 +52,58 @@ async function fetchArticles() {
     renderArticles(articlesData);
   } catch (error) {
     console.error("Error fetching articles:", error);
+  }
+}
+
+function getSessionId() {
+  const existingSessionId = localStorage.getItem(SESSION_ID_KEY);
+
+  if (existingSessionId) {
+    return existingSessionId;
+  }
+
+  const sessionId =
+    globalThis.crypto?.randomUUID?.() ||
+    `session-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+
+  localStorage.setItem(SESSION_ID_KEY, sessionId);
+  return sessionId;
+}
+
+async function saveSearchInteraction(query) {
+  const normalizedQuery = query.trim();
+  if (!normalizedQuery) return;
+
+  try {
+    await addDoc(collection(db, "searchHistory"), {
+      query: normalizedQuery,
+      action: "search",
+      sessionId: getSessionId(),
+      timestamp: serverTimestamp()
+    });
+  } catch (error) {
+    console.error("Error saving search history:", error);
+  }
+}
+
+async function saveArticleViewInteraction(article) {
+  try {
+    await addDoc(collection(db, "userHistory"), {
+      articleId: article.id || "",
+      articleTitle: article.title || "",
+      category: article.category || "",
+      keywords: Array.isArray(article.keywords)
+        ? article.keywords
+        : article.keywords
+          ? [article.keywords]
+          : [],
+      logoId: article.logoId || analyzeArticleForLogo(article),
+      action: "article_view",
+      sessionId: getSessionId(),
+      timestamp: serverTimestamp()
+    });
+  } catch (error) {
+    console.error("Error saving article view history:", error);
   }
 }
 
@@ -129,6 +184,14 @@ if (Array.isArray(article.keywords)) {
         <a href="${article.url || "#"}" target="_blank">Read article</a>
       </div>
     `;
+
+    const readArticleLink = card.querySelector("a");
+
+    if (readArticleLink) {
+      readArticleLink.addEventListener("click", () => {
+        saveArticleViewInteraction(article);
+      });
+    }
 
 card.addEventListener("click", () => {
   document.querySelectorAll(".article-card").forEach((item) => {
@@ -276,6 +339,7 @@ function commitCurrentSearch() {
   const term = searchInput.value.trim();
   if (!term) return;
   saveSearchTerm(term);
+  saveSearchInteraction(term);
   searchArticles();
   openSearchHistory();
 }
