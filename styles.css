@@ -96,14 +96,16 @@ button {
 }
 
 /* HERO */
+/* HERO */
 .hero-grid {
   position: relative;
   background: var(--bg);
+  min-height: calc(200vh - var(--topbar-h));
 }
 
 .hero-left {
   width: 57.75%;
-  min-height: 2400px;
+  min-height: calc(200vh - var(--topbar-h));
   position: relative;
   z-index: 1;
 }
@@ -117,6 +119,40 @@ button {
   padding: 0 40px 24px;
 }
 
+.hero-text-panel {
+  width: 100%;
+  min-height: calc(100vh - var(--sticky-top));
+  padding: 40px 40px 120px;
+  background: var(--bg);
+}
+
+.hero-text-block {
+  width: min(1048px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+/* right logo panel */
+.hero-right {
+  position: fixed;
+  top: var(--sticky-top);
+  right: 0;
+  width: 42.25%;
+  height: calc(100vh - var(--sticky-top));
+  z-index: 5;
+  pointer-events: none;
+}
+
+.hero-right.is-bottom {
+  position: absolute;
+  top: auto;
+  right: 0;
+  bottom: 0;
+}
+
+
+
 .hero-title-panel h1 {
   width: 100%;
   max-width: 1112px;
@@ -127,18 +163,6 @@ button {
   letter-spacing: -0.06em;
 }
 
-.hero-text-panel {
-  width: 57.75%;
-  padding: 40px 0 120px;
-  background: var(--bg);
-}
-
-.hero-text-block {
-  width: min(1048px, calc(100% - 60px));
-  display: flex;
-  flex-direction: column;
-  gap: 36px;
-}
 
 .hero-text-block p {
   color: var(--text);
@@ -157,13 +181,6 @@ button {
   height: calc(100vh - var(--sticky-top));
   z-index: 5;
   pointer-events: none;
-}
-
-.hero-right.is-bottom {
-  position: absolute;
-  top: auto;
-  right: 0;
-  bottom: 0;
 }
 
 .hero-logo-sticky {

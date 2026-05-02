@@ -76,21 +76,18 @@ window.addEventListener("DOMContentLoaded", () => {
     const passed = Math.min(Math.max(scrollY - sectionTop, 0), total);
     const progress = passed / total;
 
-    // black bar가 보이기 "직전" 오른쪽 fixed 해제
-    if (window.innerWidth > 1200 && microBar) {
-      const microBarTop = microBar.getBoundingClientRect().top;
-      const releaseEarly = 80; // 더 빨리 풀고 싶으면 120~160으로 올려
-      const releasePoint = window.innerHeight + releaseEarly;
+   // black bar가 topbar 아래에 닿는 순간 오른쪽 fixed 해제
+if (window.innerWidth > 1200 && microBar) {
+  const microBarTop = microBar.getBoundingClientRect().top;
 
-      if (microBarTop <= releasePoint) {
-        rightPanel.classList.add("is-bottom");
-      } else {
-        rightPanel.classList.remove("is-bottom");
-      }
-    } else {
-      rightPanel.classList.remove("is-bottom");
-    }
-
+  if (microBarTop <= 70) {
+    rightPanel.classList.add("is-bottom");
+  } else {
+    rightPanel.classList.remove("is-bottom");
+  }
+} else {
+  rightPanel.classList.remove("is-bottom");
+}
     // logo draw progress
     const start = 0.02;
     const end = 0.55;
