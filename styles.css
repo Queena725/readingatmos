@@ -14,8 +14,8 @@
   --black: #070100;
   --text: #333333;
   --white: #ffffff;
-  --topbar-h: 70px;
-  --sticky-top: 70px;
+  --topbar-h: 54px;
+  --sticky-top: 54px;
 }
 
 * {
@@ -66,15 +66,17 @@ button {
   height: var(--topbar-h);
   background: white;
   z-index: 100;
-  border-bottom: 1px solid ;
+  border-bottom: 1px solid black;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 30px;
 }
 
-.topbar-inner {
-  height: 100%;
-  padding: 0 30px;
+.topbar-logo {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
 }
 
 .topbar-logo img {
@@ -82,17 +84,35 @@ button {
   height: auto;
 }
 
-.topbar-nav {
+.site-topbar-left,
+.site-topbar-right {
   display: flex;
   align-items: center;
-  gap: 32px;
-  font-size: 18px;
-  font-weight: 700;
+  gap: 24px;
+}
+
+.site-topbar-left {
+  justify-self: start;
+}
+
+.site-topbar-center {
+  justify-self: center;
+}
+
+.site-topbar-right {
+  justify-self: end;
+}
+
+.site-topbar-left a,
+.site-topbar-right a {
+  font-size: 14px;
+  font-weight: 400;
   text-transform: lowercase;
 }
 
-.topbar-nav button {
-  font-size: 20px;
+.site-topbar-left a:hover,
+.site-topbar-right a:hover {
+  text-decoration: underline;
 }
 
 /* HERO */
@@ -489,7 +509,7 @@ button {
 
 /* MOBILE */
 @media (max-width: 768px) {
-  .topbar-inner,
+  .topbar,
   .green-strip,
   .projects-cta,
   .contact-info,
@@ -538,8 +558,13 @@ button {
     font-size: 72px;
   }
 
-  .topbar-nav {
+  .site-topbar-left,
+  .site-topbar-right {
     gap: 16px;
+  }
+
+  .site-topbar-left a,
+  .site-topbar-right a {
     font-size: 12px;
   }
 }

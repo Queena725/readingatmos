@@ -4,26 +4,31 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Atmos Reading Articles</title>
-  <link rel="stylesheet" href="./articles.css" />
+  <link rel="stylesheet" href="./articles.css?v=20260502-2" />
 </head>
 
 <body>
-  <nav class="article-topbar">
-    <a href="./index.html" class="topbar-left">Back</a>
+  <nav class="article-topbar site-topbar">
+    <div class="site-topbar-left">
+      <a href="https://atmos.earth/" target="_blank" rel="noopener noreferrer">atmos.earth</a>
+    </div>
 
-    <div class="topbar-logo" id="archiveLogo">
+    <div class="topbar-logo site-topbar-center" id="archiveLogo">
       <span id="archiveLogoText">Atmos</span>
       <img id="archiveLogoImage" src="" alt="Responsive logo" />
     </div>
 
-    <div class="topbar-right">
-      <button id="topSearchButton" type="button">Search</button>
-      <input
-        id="articleSearch"
-        class="topbar-search-input"
-        type="text"
-        placeholder="Search keywords"
-      />
+    <div class="site-topbar-right">
+      <a href="./articles.html" class="site-archive-link">archive</a>
+      <div class="topbar-right">
+        <button id="topSearchButton" type="button">Search</button>
+        <input
+          id="articleSearch"
+          class="topbar-search-input"
+          type="text"
+          placeholder="Search keywords"
+        />
+      </div>
     </div>
   </nav>
 
@@ -37,6 +42,6 @@
     </section>
   </main>
 
-  <script type="module" src="./articles.js"></script>
+  <script type="module" src="./articles.js?v=20260502-2"></script>
 </body>
 </html>
