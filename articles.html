@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Atmos Reading Articles</title>
-  <link rel="stylesheet" href="./articles.css?v=20260502-3" />
+  <link rel="stylesheet" href="./articles.css?v=20260502-4" />
 </head>
 
 <body>
@@ -21,15 +21,6 @@
     <div class="site-topbar-right">
       <a href="./index.html" class="site-home-link">home</a>
       <a href="./articles.html" class="site-archive-link">archive</a>
-      <div class="topbar-right">
-        <button id="topSearchButton" type="button">Search</button>
-        <input
-          id="articleSearch"
-          class="topbar-search-input"
-          type="text"
-          placeholder="Search keywords"
-        />
-      </div>
     </div>
   </nav>
 
@@ -37,12 +28,35 @@
     <h1>All Articles</h1>
   </header>
 
+  <section class="archive-search-section">
+    <div class="archive-search-wrap" id="archiveSearchWrap">
+      <div class="archive-search-field">
+        <input
+          id="articleSearch"
+          class="archive-search-input"
+          type="text"
+          placeholder=""
+          autocomplete="off"
+        />
+        <button id="topSearchButton" class="archive-search-button" type="button" aria-label="Save search">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="M16.65 16.65L21 21"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="archive-search-history" id="searchHistoryPanel" hidden>
+        <ul class="archive-search-history-list" id="searchHistoryList"></ul>
+      </div>
+    </div>
+  </section>
+
   <main class="articles-main">
     <section id="allArticles" class="articles-grid">
       <!-- Firebase articles will appear here -->
     </section>
   </main>
 
-  <script type="module" src="./articles.js?v=20260502-3"></script>
+  <script type="module" src="./articles.js?v=20260502-4"></script>
 </body>
 </html>

@@ -23,11 +23,16 @@ const db = getFirestore(app);
 const allArticles = document.querySelector("#allArticles");
 const searchInput = document.querySelector("#articleSearch");
 const searchButton = document.querySelector("#topSearchButton");
+const searchWrap = document.querySelector("#archiveSearchWrap");
+const searchHistoryPanel = document.querySelector("#searchHistoryPanel");
+const searchHistoryList = document.querySelector("#searchHistoryList");
 const logoText = document.querySelector("#archiveLogoText");
 const logoImage = document.querySelector("#archiveLogoImage");
 
 let articlesData = [];
 const logoCache = {};
+const SEARCH_HISTORY_KEY = "readingAtmosSearchHistory";
+const SEARCH_HISTORY_LIMIT = 5;
 
 /* Fetch articles */
 
@@ -174,6 +179,107 @@ function searchArticles() {
   renderArticles(filteredArticles);
 }
 
+function getSearchHistory() {
+  try {
+    const stored = localStorage.getItem(SEARCH_HISTORY_KEY);
+    const parsed = stored ? JSON.parse(stored) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    console.warn("Failed to read search history:", error);
+    return [];
+  }
+}
+
+function setSearchHistory(history) {
+  localStorage.setItem(
+    SEARCH_HISTORY_KEY,
+    JSON.stringify(history.slice(0, SEARCH_HISTORY_LIMIT))
+  );
+}
+
+function renderSearchHistory() {
+  if (!searchHistoryList) return;
+
+  const history = getSearchHistory();
+  searchHistoryList.innerHTML = "";
+
+  history.forEach((term) => {
+    const item = document.createElement("li");
+    item.className = "archive-search-history-item";
+
+    const termButton = document.createElement("button");
+    termButton.type = "button";
+    termButton.className = "archive-search-history-term";
+    termButton.textContent = term;
+    termButton.addEventListener("click", () => {
+      if (!searchInput) return;
+      searchInput.value = term;
+      searchArticles();
+      saveSearchTerm(term);
+      openSearchHistory();
+      searchInput.focus();
+    });
+
+    const removeButton = document.createElement("button");
+    removeButton.type = "button";
+    removeButton.className = "archive-search-history-remove";
+    removeButton.setAttribute("aria-label", `Remove ${term}`);
+    removeButton.textContent = "X";
+    removeButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      removeSearchTerm(term);
+    });
+
+    item.append(termButton, removeButton);
+    searchHistoryList.appendChild(item);
+  });
+}
+
+function openSearchHistory() {
+  if (!searchHistoryPanel) return;
+  renderSearchHistory();
+  searchHistoryPanel.hidden = getSearchHistory().length === 0;
+}
+
+function closeSearchHistory() {
+  if (!searchHistoryPanel) return;
+  searchHistoryPanel.hidden = true;
+}
+
+function saveSearchTerm(term) {
+  const normalizedTerm = term.trim();
+  if (!normalizedTerm) return;
+
+  const nextHistory = [
+    normalizedTerm,
+    ...getSearchHistory().filter(
+      (item) => item.toLowerCase() !== normalizedTerm.toLowerCase()
+    )
+  ];
+
+  setSearchHistory(nextHistory);
+  renderSearchHistory();
+}
+
+function removeSearchTerm(term) {
+  const nextHistory = getSearchHistory().filter((item) => item !== term);
+  setSearchHistory(nextHistory);
+  renderSearchHistory();
+
+  if (nextHistory.length === 0) {
+    closeSearchHistory();
+  }
+}
+
+function commitCurrentSearch() {
+  if (!searchInput) return;
+  const term = searchInput.value.trim();
+  if (!term) return;
+  saveSearchTerm(term);
+  searchArticles();
+  openSearchHistory();
+}
+
 /* Logo selection */
 
 function analyzeArticleForLogo(article) {
@@ -315,17 +421,25 @@ function resetArchiveLogo() {
 /* Topbar search behavior */
 
 if (searchInput) {
-  searchInput.addEventListener("input", searchArticles);
+  searchInput.addEventListener("input", () => {
+    searchArticles();
+    openSearchHistory();
+  });
+
+  searchInput.addEventListener("focus", () => {
+    openSearchHistory();
+  });
 
   searchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      commitCurrentSearch();
+      return;
+    }
+
     if (event.key === "Escape") {
-      searchInput.classList.remove("is-open");
+      closeSearchHistory();
       searchInput.value = "";
-
-      if (searchButton) {
-        searchButton.style.display = "inline";
-      }
-
       renderArticles(articlesData);
     }
   });
@@ -333,10 +447,19 @@ if (searchInput) {
 
 if (searchButton && searchInput) {
   searchButton.addEventListener("click", () => {
-    searchInput.classList.add("is-open");
-    searchButton.style.display = "none";
+    commitCurrentSearch();
     searchInput.focus();
   });
 }
+
+document.addEventListener("click", (event) => {
+  if (!searchWrap) return;
+
+  if (!searchWrap.contains(event.target)) {
+    closeSearchHistory();
+  }
+});
+
+renderSearchHistory();
 
 fetchArticles();
