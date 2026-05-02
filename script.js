@@ -62,12 +62,44 @@ window.addEventListener("DOMContentLoaded", () => {
   const path = document.querySelector(".draw-path");
   const fills = document.querySelectorAll(".logo-fill");
   const logoGroup = document.querySelector(".logo-group");
+  const titleSlides = document.querySelectorAll(".hero-title-slide");
+  const heroImages = [
+    "images/0401_fema_climatedisasters.jpg",
+    "images/0408_borderwall_bigbend.jpg",
+    "images/0415_nationalsecurity_drilling.jpg",
+    "images/0410_theoverview.jpg",
+    "images/as-the-crow-flies.jpg"
+  ];
 
   if (!section || !rightPanel || !path) return;
 
   const length = path.getTotalLength();
   path.style.strokeDasharray = length;
   path.style.strokeDashoffset = length;
+
+  if (titleSlides.length) {
+    titleSlides.forEach((slide, index) => {
+      const image = heroImages[index];
+
+      if (!image) {
+        slide.remove();
+        return;
+      }
+
+      slide.style.backgroundImage = `url("${image}")`;
+    });
+
+    let activeSlideIndex = 0;
+    const visibleSlides = Array.from(document.querySelectorAll(".hero-title-slide"));
+
+    if (visibleSlides.length > 1) {
+      window.setInterval(() => {
+        visibleSlides[activeSlideIndex].classList.remove("is-active");
+        activeSlideIndex = (activeSlideIndex + 1) % visibleSlides.length;
+        visibleSlides[activeSlideIndex].classList.add("is-active");
+      }, 4000);
+    }
+  }
 
   function updateHero() {
     const scrollY = window.scrollY;
@@ -76,18 +108,19 @@ window.addEventListener("DOMContentLoaded", () => {
     const passed = Math.min(Math.max(scrollY - sectionTop, 0), total);
     const progress = passed / total;
 
-   // black bar가 topbar 아래에 닿는 순간 오른쪽 fixed 해제
-if (window.innerWidth > 1200 && microBar) {
-  const microBarTop = microBar.getBoundingClientRect().top;
+    // Start releasing the right panel as soon as the black bar enters the viewport.
+    if (window.innerWidth > 1200 && microBar) {
+      const microBarTop = microBar.getBoundingClientRect().top;
 
-  if (microBarTop <= 70) {
-    rightPanel.classList.add("is-bottom");
-  } else {
-    rightPanel.classList.remove("is-bottom");
-  }
-} else {
-  rightPanel.classList.remove("is-bottom");
-}
+      if (microBarTop <= window.innerHeight) {
+        rightPanel.classList.add("is-bottom");
+      } else {
+        rightPanel.classList.remove("is-bottom");
+      }
+    } else {
+      rightPanel.classList.remove("is-bottom");
+    }
+
     // logo draw progress
     const start = 0.02;
     const end = 0.55;
@@ -97,7 +130,7 @@ if (window.innerWidth > 1200 && microBar) {
     path.style.strokeDashoffset = length * (1 - mapped);
 
     fills.forEach((fill) => {
-      fill.style.opacity = mapped;
+      fill.style.opacity = 1;
     });
 
     // 확대/이동 효과 제거

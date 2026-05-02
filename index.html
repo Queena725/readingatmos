@@ -29,7 +29,14 @@
       <!-- HERO / STICKY SECTION -->
       <section class="hero-grid" id="heroStickySection">
         <div class="hero-left">
-          <div class="hero-title-panel">
+          <div class="hero-title-panel" id="readingAtmosHero">
+            <div class="hero-title-slides" aria-hidden="true">
+              <div class="hero-title-slide is-active"></div>
+              <div class="hero-title-slide"></div>
+              <div class="hero-title-slide"></div>
+              <div class="hero-title-slide"></div>
+              <div class="hero-title-slide"></div>
+            </div>
             <h1>ReadingAtmos</h1>
           </div>
 
@@ -91,25 +98,10 @@
 
       <!-- BLACK BAR -->
       <section class="micro-bar">
-        <span>A new way to read Atmos</span>
-      
+        <a href="./articles.html">View all articles</a>
       </section>
 
-      <section class="logo-stages">
-  <div class="stage-card">
-    <svg class="stage-logo" width="79" height="77" viewBox="0 0 79 77" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M63.8531 62.5C61.3531 42.8959 56.4224 0.50035 41.99 0.5C27.5577 0.49965 22.4223 36.5715 16.9223 61.0358C11.4223 85.5 -9.78373 79 5.35318 59.5C20.4901 40 63.8531 41.3422 75.3531 61.0358C86.8531 80.7293 66.3531 82.1041 63.8531 62.5Z" stroke="black" stroke-dasharray="1 40"/>
-    </svg>
-    <p>Positive 0 · Negative 120</p>
-  </div>
-
-  <div class="stage-card">
-    <svg class="stage-logo" width="79" height="78" viewBox="0 0 79 78" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M63.8531 62.5C61.3531 42.8959 56.4224 0.50035 41.99 0.5C27.5577 0.49965 22.4223 36.5715 16.9223 61.0358C11.4223 85.5 -9.78373 79 5.35318 59.5C20.4901 40 63.8531 41.3422 75.3531 61.0358C86.8531 80.7293 66.3531 82.1041 63.8531 62.5Z" stroke="black" stroke-dasharray="1 20"/>
-    </svg>
-    <p>Positive 10 · Negative 110</p>
-  </div>
-
+<section class="logo-stages">
   <div class="stage-card">
     <svg class="stage-logo" width="80" height="78" viewBox="0 0 80 78" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M64.0967 62.5C61.5967 42.8959 56.6659 0.50035 42.2336 0.5C27.8012 0.49965 22.6658 36.5715 17.1658 61.0358C11.6659 85.5 -9.5402 79 5.59671 59.5C20.7336 40 64.0967 41.3422 75.5967 61.0358C87.0967 80.7293 66.5967 82.1041 64.0967 62.5Z" stroke="black" stroke-dasharray="1 10"/>
@@ -162,17 +154,6 @@
   </div>
 
   <div class="stage-card">
-    <svg class="stage-logo" width="81" height="79" viewBox="0 0 81 79" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M64.8421 62.5C62.3421 42.8959 57.4113 0.50035 42.979 0.5C28.5467 0.49965 23.4112 36.5715 17.9113 61.0358C12.4113 85.5 -8.79478 79 6.34213 59.5C21.479 40 64.8421 41.3422 76.3421 61.0358C87.8421 80.7293 67.3421 82.1041 64.8421 62.5Z" stroke="black"/>
-      <rect x="17" y="45.5" width="8" height="7" fill="white"/>
-      <path d="M31.1127 11.114C44.6127 -9 54.1127 11.5 54.1127 11.5C54.1127 11.5 50.3366 0.5 43.1751 0.5C36.0137 0.5 31.8413 9.33193 31.1127 11.114Z" fill="black"/>
-      <path d="M64.2363 63.5C67.8579 88 90.8579 80 75.8579 61.5C87.1127 81.5 67.8281 79.5 64.2363 63.5Z" fill="black"/>
-      <path d="M17.3277 63.5527C12.6127 87.5001 -10.1508 79.8855 5.38811 61.4799C-5.88733 75.5001 9.11267 86.5001 17.3277 63.5527Z" fill="black"/>
-    </svg>
-    <p>Positive 80 · Negative 40</p>
-  </div>
-
-  <div class="stage-card">
     <svg class="stage-logo" width="82" height="78" viewBox="0 0 82 78" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M65.8421 62.5C63.3421 42.8959 58.4113 0.50035 43.979 0.5C29.5467 0.49965 24.4112 36.5715 18.9113 61.0358C13.4113 85.5 -7.79478 79 7.34213 59.5C22.479 40 65.8421 41.3422 77.3421 61.0358C88.8421 80.7293 68.3421 82.1041 65.8421 62.5Z" stroke="black"/>
       <path d="M28.4637 18.8333C45.5 -15.5 58.4637 19.5 58.4637 19.5C58.4637 19.5 53.5383 0.5 44.1973 0.5C34.8563 0.5 29.414 15.7552 28.4637 18.8333Z" fill="black"/>
@@ -180,16 +161,6 @@
       <path d="M16.9637 66.5001C10.9638 84.5001 -8.6579 77.0001 9.34211 57.5002C-1.65789 70.5002 5.46375 85.0001 16.9637 66.5001Z" fill="black"/>
     </svg>
     <p>Positive 90 · Negative 30</p>
-  </div>
-
-  <div class="stage-card">
-    <svg class="stage-logo" width="82" height="78" viewBox="0 0 82 78" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M65.8421 62.5C63.3421 42.8959 58.4113 0.50035 43.979 0.5C29.5467 0.49965 24.4112 36.5715 18.9113 61.0358C13.4113 85.5 -7.79478 79 7.34213 59.5C22.479 40 65.8421 41.3422 77.3421 61.0358C88.8421 80.7293 68.3421 82.1041 65.8421 62.5Z" stroke="black"/>
-      <path d="M28.4637 18.8333C45.9264 -9.5 58.4637 19.5 58.4637 19.5C58.4637 19.5 53.5383 0.5 44.1973 0.5C34.8563 0.5 29.414 15.7552 28.4637 18.8333Z" fill="black"/>
-      <path d="M66.4637 64C67.9637 84 91.4637 79 76.4637 60.5C85.9638 79.5 68.4637 77 66.4637 64Z" fill="black"/>
-      <path d="M16.9637 66.5001C10.9638 84.5001 -8.6579 77.0001 9.34211 57.5002C-1.65789 70.5002 5.96381 82.0001 16.9637 66.5001Z" fill="black"/>
-    </svg>
-    <p>Positive 100 · Negative 20</p>
   </div>
 
   <div class="stage-card">
@@ -205,47 +176,6 @@
 
 
 <section class="projects-grid" id="featuredArticles"></section>
-
-<a class="view-all-link" href="./articles.html">View all articles</a>
-      </section>
-
-  
-
-      <section class="contact-info">
-        <p>
-          Atmos is a nonprofit media organization focused on the
-          cross-pollination of climate and culture, delivering award-winning
-          journalism and creative storytelling through a print magazine, digital
-          features, newsletters, podcast, and more. Our mission is to
-          re-enchant people with nature. We inspire cultural transformation by
-          illuminating human impact on the planet, the intelligence of the
-          natural world, and solutions to heal and protect it.
-        </p>
-
-        <h2>connect@atmos.earth</h2>
-      </section>
-
-      <footer class="footer-green">
-        <div class="footer-links">
-          <div>
-            <a href="#">Read stories</a>
-          </div>
-
-          <div>
-            <a href="#">Instagram</a>
-            <a href="#">Threads</a>
-            <a href="#">Bluesky</a>
-          </div>
-
-          <div>
-            <a href="#" class="privacy">Privacy Policy</a>
-          </div>
-        </div>
-
-        <div class="footer-title">
-          <h2>ReadingAtmos</h2>
-        </div>
-      </footer>
     </main>
 
     <script type="module" src="script.js"></script>
