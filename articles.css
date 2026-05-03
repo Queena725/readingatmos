@@ -271,7 +271,8 @@ main {
 
 .article-date {
   margin: 0 0 16px;
-  font-size: 15px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
 }
 
 .article-summary {
@@ -289,6 +290,7 @@ main {
 .article-content a {
   color: black;
   text-decoration: underline;
+  font-size: 12px;
 }
 
 .article-content a:visited {
