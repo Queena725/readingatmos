@@ -44,6 +44,27 @@ function getArticleLoadingLogo(article) {
   return article.logoId || article.logo || article.logoImage || "logo1.png";
 }
 
+function getDefaultLoadingLogoMarkup() {
+  return `
+    <svg
+      class="article-loading-mark"
+      width="199"
+      height="193"
+      viewBox="0 0 199 193"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path
+        d="M159.819 155.837C153.585 106.957 141.291 1.24758 105.305 1.2467C69.3198 1.24583 56.5151 91.1874 42.8015 152.186C29.0879 213.186 -23.7873 196.979 13.955 148.357C51.6974 99.736 159.819 103.083 188.493 152.186C217.167 201.29 166.052 204.718 159.819 155.837Z"
+        stroke="black"
+        stroke-width="2.4934"
+        stroke-dasharray="2.49 24.93"
+      />
+    </svg>
+  `;
+}
+
 function getArticleLoadingLogoCandidates(article) {
   const logoValue = getArticleLoadingLogo(article);
   const hasExtension = /\.(svg|png|jpe?g|webp|gif)(\?.*)?$/i.test(logoValue);
@@ -52,6 +73,9 @@ function getArticleLoadingLogoCandidates(article) {
 
   if (hasExtension || hasPath) {
     candidates.push(logoValue);
+    if (!hasPath) {
+      candidates.push(`images/${logoValue}`);
+    }
   } else {
     candidates.push(`images/${logoValue}.svg`, `images/${logoValue}.png`);
   }
@@ -75,7 +99,7 @@ async function renderArticleLoadingLogo(article) {
   const loadingLogo = document.querySelector("#articleLoadingLogo");
   if (!loadingLogo) return;
 
-  loadingLogo.innerHTML = "";
+  loadingLogo.innerHTML = getDefaultLoadingLogoMarkup();
 
   for (const candidate of getArticleLoadingLogoCandidates(article)) {
     if (candidate.toLowerCase().includes(".svg")) {
@@ -91,6 +115,7 @@ async function renderArticleLoadingLogo(article) {
         if (!parsedSvg) continue;
 
         parsedSvg.classList.add("article-loading-mark");
+        loadingLogo.innerHTML = "";
         loadingLogo.appendChild(parsedSvg);
         return;
       } catch (error) {
@@ -101,6 +126,7 @@ async function renderArticleLoadingLogo(article) {
         const image = await loadImage(candidate);
         image.className = "article-loading-mark";
         image.alt = "";
+        loadingLogo.innerHTML = "";
         loadingLogo.appendChild(image);
         return;
       } catch (error) {
@@ -121,13 +147,29 @@ async function showArticleLoadingTransition(article) {
   }
 
   isArticleTransitioning = true;
-  await renderArticleLoadingLogo(article);
   overlay.classList.add("is-visible");
   overlay.setAttribute("aria-hidden", "false");
+  renderArticleLoadingLogo(article);
 
   window.setTimeout(() => {
     window.location.href = article.url;
   }, ARTICLE_LOADING_DELAY);
+}
+
+function resetArticleLoadingTransition() {
+  const overlay = document.querySelector("#articleLoadingOverlay");
+  const loadingLogo = document.querySelector("#articleLoadingLogo");
+
+  isArticleTransitioning = false;
+
+  if (overlay) {
+    overlay.classList.remove("is-visible");
+    overlay.setAttribute("aria-hidden", "true");
+  }
+
+  if (loadingLogo) {
+    loadingLogo.innerHTML = getDefaultLoadingLogoMarkup();
+  }
 }
 
 /* Fetch articles */
@@ -628,6 +670,8 @@ document.addEventListener("click", (event) => {
     closeSearchHistory();
   }
 });
+
+window.addEventListener("pageshow", resetArticleLoadingTransition);
 
 renderSearchHistory();
 
