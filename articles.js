@@ -44,23 +44,84 @@ function getArticleLoadingLogo(article) {
   return article.logoId || article.logo || article.logoImage || "logo1.png";
 }
 
-function showArticleLoadingTransition(article) {
+function getArticleLoadingLogoCandidates(article) {
+  const logoValue = getArticleLoadingLogo(article);
+  const hasExtension = /\.(svg|png|jpe?g|webp|gif)(\?.*)?$/i.test(logoValue);
+  const hasPath = logoValue.includes("/");
+  const candidates = [];
+
+  if (hasExtension || hasPath) {
+    candidates.push(logoValue);
+  } else {
+    candidates.push(`images/${logoValue}.svg`, `images/${logoValue}.png`);
+  }
+
+  candidates.push("images/logo1.svg", "images/logo1.png", "logo1.png");
+
+  return [...new Set(candidates)];
+}
+
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+
+    image.onload = () => resolve(image);
+    image.onerror = reject;
+    image.src = src;
+  });
+}
+
+async function renderArticleLoadingLogo(article) {
+  const loadingLogo = document.querySelector("#articleLoadingLogo");
+  if (!loadingLogo) return;
+
+  loadingLogo.innerHTML = "";
+
+  for (const candidate of getArticleLoadingLogoCandidates(article)) {
+    if (candidate.toLowerCase().includes(".svg")) {
+      try {
+        const response = await fetch(candidate);
+        if (!response.ok) continue;
+
+        const svgText = await response.text();
+        const parsedSvg = new DOMParser()
+          .parseFromString(svgText, "image/svg+xml")
+          .querySelector("svg");
+
+        if (!parsedSvg) continue;
+
+        parsedSvg.classList.add("article-loading-mark");
+        loadingLogo.appendChild(parsedSvg);
+        return;
+      } catch (error) {
+        console.warn("Loading logo SVG failed:", candidate, error);
+      }
+    } else {
+      try {
+        const image = await loadImage(candidate);
+        image.className = "article-loading-mark";
+        image.alt = "";
+        loadingLogo.appendChild(image);
+        return;
+      } catch (error) {
+        console.warn("Loading logo image failed:", candidate, error);
+      }
+    }
+  }
+}
+
+async function showArticleLoadingTransition(article) {
   if (!article.url || isArticleTransitioning) return;
 
   const overlay = document.querySelector("#articleLoadingOverlay");
-  const loadingLogo = document.querySelector("#articleLoadingLogo");
 
-  if (!overlay || !loadingLogo) {
+  if (!overlay) {
     window.location.href = article.url;
     return;
   }
 
   isArticleTransitioning = true;
-  loadingLogo.onerror = () => {
-    loadingLogo.onerror = null;
-    loadingLogo.src = "logo1.png";
-  };
-  loadingLogo.src = getArticleLoadingLogo(article);
+  await renderArticleLoadingLogo(article);
   overlay.classList.add("is-visible");
   overlay.setAttribute("aria-hidden", "false");
 

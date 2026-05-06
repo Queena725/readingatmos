@@ -454,9 +454,49 @@ main {
 
 .article-loading-logo {
   width: clamp(48px, 8vw, 92px);
-  height: auto;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   opacity: 0;
   filter: blur(3px);
+}
+
+.article-loading-mark {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  overflow: visible;
+}
+
+.article-loading-mark path,
+.article-loading-mark line,
+.article-loading-mark polyline,
+.article-loading-mark polygon,
+.article-loading-mark circle,
+.article-loading-mark ellipse {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.article-loading-mark path[stroke-dasharray],
+.article-loading-mark line[stroke-dasharray],
+.article-loading-mark polyline[stroke-dasharray],
+.article-loading-mark polygon[stroke-dasharray],
+.article-loading-mark circle[stroke-dasharray],
+.article-loading-mark ellipse[stroke-dasharray] {
+  animation: articleLogoDraw 2.4s ease forwards,
+    articleLogoSparkle 0.9s ease-in-out infinite 0.45s;
+  stroke-dashoffset: 220;
+}
+
+.article-loading-mark path:not([stroke-dasharray]),
+.article-loading-mark line:not([stroke-dasharray]),
+.article-loading-mark polyline:not([stroke-dasharray]),
+.article-loading-mark polygon:not([stroke-dasharray]),
+.article-loading-mark circle:not([stroke-dasharray]),
+.article-loading-mark ellipse:not([stroke-dasharray]) {
+  animation: articleLogoFadeStroke 2.2s ease forwards;
 }
 
 .article-loading-overlay.is-visible .article-loading-logo {
@@ -482,5 +522,38 @@ main {
   100% {
     opacity: 1;
     filter: blur(0);
+  }
+}
+
+@keyframes articleLogoDraw {
+  0% {
+    stroke-dashoffset: 220;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes articleLogoSparkle {
+  0%,
+  100% {
+    opacity: 0.52;
+    filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+  }
+
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 7px rgba(0, 0, 0, 0.36));
+  }
+}
+
+@keyframes articleLogoFadeStroke {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }
