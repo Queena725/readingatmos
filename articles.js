@@ -36,6 +36,38 @@ const logoCache = {};
 const SEARCH_HISTORY_KEY = "readingAtmosSearchHistory";
 const SEARCH_HISTORY_LIMIT = 5;
 const SESSION_ID_KEY = "readingAtmosSessionId";
+const ARTICLE_LOADING_DELAY = 3000;
+
+let isArticleTransitioning = false;
+
+function getArticleLoadingLogo(article) {
+  return article.logoId || article.logo || article.logoImage || "logo1.png";
+}
+
+function showArticleLoadingTransition(article) {
+  if (!article.url || isArticleTransitioning) return;
+
+  const overlay = document.querySelector("#articleLoadingOverlay");
+  const loadingLogo = document.querySelector("#articleLoadingLogo");
+
+  if (!overlay || !loadingLogo) {
+    window.location.href = article.url;
+    return;
+  }
+
+  isArticleTransitioning = true;
+  loadingLogo.onerror = () => {
+    loadingLogo.onerror = null;
+    loadingLogo.src = "logo1.png";
+  };
+  loadingLogo.src = getArticleLoadingLogo(article);
+  overlay.classList.add("is-visible");
+  overlay.setAttribute("aria-hidden", "false");
+
+  window.setTimeout(() => {
+    window.location.href = article.url;
+  }, ARTICLE_LOADING_DELAY);
+}
 
 /* Fetch articles */
 
@@ -190,22 +222,28 @@ if (Array.isArray(article.keywords)) {
         <p class="article-date">${article.date || ""}</p>
         <p class="article-summary">${article.summary || ""}</p>
         <p class="article-keywords">${keywords}</p>
-        <a href="${article.url || "#"}" target="_blank">Read article</a>
+        <a href="${article.url || "#"}">Read article</a>
       </div>
     `;
 
     const readArticleLink = card.querySelector("a");
 
     if (readArticleLink) {
-      readArticleLink.addEventListener("click", () => {
+      readArticleLink.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         setLastOpenedCard(card);
         saveArticleViewInteraction(article);
+        updateArchiveLogo(article);
+        showArticleLoadingTransition(article);
       });
     }
 
     card.addEventListener("click", () => {
       setLastOpenedCard(card);
       updateArchiveLogo(article);
+      saveArticleViewInteraction(article);
+      showArticleLoadingTransition(article);
     });
     allArticles.appendChild(card);
   });
