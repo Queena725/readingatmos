@@ -470,13 +470,10 @@ body.intro-complete .site-intro {
 }
 
 .favicon-showcase-logo {
-  width: 140px;
-  aspect-ratio: 1;
+  width: min(520px, 52vw);
+  height: auto;
   object-fit: contain;
-  border-radius: 50%;
   background: #ffffff;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
-  padding: 30px;
 }
 
 .favicon-showcase p {
