@@ -210,29 +210,29 @@ body.intro-complete .site-intro {
 }
 
 .home-body .topbar {
-  background: #ffffff;
+  background: transparent;
   border-bottom: 0;
 }
 
 .home-body .topbar-inner {
-  padding: 0 48px;
+  padding: 0 32px;
   align-items: flex-start;
 }
 
 .home-body .topbar-left {
-  padding-top: 18px;
+  padding-top: 34px;
 }
 
 .home-body .topbar-logo img {
-  width: 42px;
+  width: 84px;
 }
 
 .home-body .topbar-nav {
-  width: 30vw;
-  min-width: 300px;
+  width: 30%;
+  min-width: 280px;
   height: var(--topbar-h);
   margin-left: auto;
-  padding: 24px 0 0;
+  padding: 42px 34px 0 0;
   justify-content: flex-end;
   gap: 64px;
   color: #050505;
