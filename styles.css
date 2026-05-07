@@ -215,7 +215,7 @@ body.intro-complete .site-intro {
 }
 
 .home-body .topbar-inner {
-  padding: 0 32px;
+  padding: 0 48px;
   align-items: flex-start;
 }
 
@@ -232,9 +232,9 @@ body.intro-complete .site-intro {
   min-width: 300px;
   height: var(--topbar-h);
   margin-left: auto;
-  padding: 24px 24px 0 28px;
-  justify-content: space-between;
-  gap: 28px;
+  padding: 24px 0 0;
+  justify-content: flex-end;
+  gap: 64px;
   color: #050505;
   font-family: "Inter", Arial, Helvetica, sans-serif;
   font-size: 14px;
@@ -461,8 +461,9 @@ body.intro-complete .site-intro {
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
-  gap: 58px;
+  gap: 64px;
   padding-top: 8px;
+  min-width: min(520px, 38vw);
 }
 
 .archive-magazine,
@@ -479,6 +480,7 @@ body.intro-complete .site-intro {
 .archive-search {
   position: relative;
   width: 84px;
+  margin-right: auto;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -928,6 +930,7 @@ body.intro-complete .site-intro {
 
   .archive-actions {
     gap: 18px;
+    min-width: 0;
   }
 
   .archive-magazine,
@@ -939,6 +942,7 @@ body.intro-complete .site-intro {
 
   .archive-search {
     width: 96px;
+    margin-right: 0;
     justify-content: flex-start;
   }
 
