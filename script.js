@@ -147,21 +147,14 @@ function getArticleImage(article, index = 0) {
 
 function setWallVisual(article, index = 0) {
   const wallLogo = document.querySelector("#wallLogo");
-  const wallCenter = document.querySelector(".wall-center");
 
-  if (!wallLogo || !wallCenter) return;
+  if (!wallLogo) return;
 
-  wallCenter.classList.add("is-changing");
-
-  window.setTimeout(() => {
-    wallLogo.onerror = () => {
-      wallLogo.onerror = null;
-      wallLogo.src = buildLogoVariant(article, index);
-    };
-    wallLogo.src = article ? getArticleLogo(article, index) : DEFAULT_LOGO;
-
-    wallCenter.classList.remove("is-changing");
-  }, 90);
+  wallLogo.onerror = () => {
+    wallLogo.onerror = null;
+    wallLogo.src = DEFAULT_LOGO;
+  };
+  wallLogo.src = article ? buildLogoVariant(article, index) : DEFAULT_LOGO;
 }
 
 function getSearchText(article) {
