@@ -476,14 +476,6 @@ body.intro-complete .site-intro {
   background: #ffffff;
 }
 
-.favicon-showcase p {
-  margin: 0;
-  color: #050505;
-  font-family: "Inter", Arial, Helvetica, sans-serif;
-  font-size: 16px;
-  font-weight: 300;
-}
-
 /* ARCHIVE WALL */
 .archive-wall {
   height: 100vh;
