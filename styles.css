@@ -379,8 +379,9 @@ button {
 
 .archive-search span {
   color: #050505;
-  font-size: 14px;
-  font-weight: 700;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 10px;
+  font-weight: 600;
   line-height: 1;
   text-transform: lowercase;
   white-space: nowrap;
@@ -391,9 +392,9 @@ button {
   position: absolute;
   right: 4px;
   top: 9px;
-  width: 14px;
-  height: 14px;
-  border: 2px solid #050505;
+  width: 11px;
+  height: 11px;
+  border: 1.5px solid #050505;
   border-radius: 50%;
 }
 
@@ -401,9 +402,9 @@ button {
   content: "";
   position: absolute;
   right: 1px;
-  top: 23px;
-  width: 9px;
-  height: 2px;
+  top: 20px;
+  width: 7px;
+  height: 1.5px;
   background: #050505;
   transform: rotate(45deg);
   transform-origin: left center;
@@ -513,7 +514,7 @@ button {
   left: 0;
   top: -15px;
   z-index: 2;
-  max-width: 86%;
+  max-width: 96%;
   color: #111;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 10px;
@@ -522,8 +523,8 @@ button {
   letter-spacing: 0;
   text-transform: none;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: visible;
+  text-overflow: clip;
 }
 
 .article-card img {
