@@ -52,7 +52,7 @@
 }
 
 :root {
-  --bg: #f3f3f3;
+  --bg: #ffffff;
   --black: #070100;
   --text: #333333;
   --white: #ffffff;
@@ -377,7 +377,7 @@ body.intro-complete .site-intro {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f2f2f2;
+  background: #ffffff;
   overflow: hidden;
   padding: 40px 36px;
 }
