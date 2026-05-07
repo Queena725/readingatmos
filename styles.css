@@ -83,6 +83,10 @@ body {
   padding-top: 0;
 }
 
+body.is-intro-playing {
+  overflow: hidden;
+}
+
 img {
   display: block;
   max-width: 100%;
@@ -111,6 +115,57 @@ button {
 
 .archive-body .topbar {
   display: none;
+}
+
+.site-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  background: #000000;
+  pointer-events: none;
+  animation: introFade 0.75s ease 2.9s forwards;
+}
+
+.site-intro-logo {
+  width: min(150px, 24vw);
+  height: auto;
+  overflow: visible;
+}
+
+.site-intro-outline {
+  stroke-dasharray: 980;
+  stroke-dashoffset: 980;
+  animation: introDraw 1.8s cubic-bezier(0.65, 0, 0.15, 1) 0.25s forwards;
+}
+
+.site-intro-fill {
+  opacity: 0;
+  animation: introFill 0.7s ease 1.55s forwards;
+}
+
+body.intro-complete .site-intro {
+  display: none;
+}
+
+@keyframes introDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes introFill {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes introFade {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 /* TOPBAR */
@@ -334,7 +389,7 @@ button {
 .archive-wall {
   height: 100vh;
   min-height: 620px;
-  padding: 28px 16px 14px;
+  padding: 44px 0 14px;
   background: #ffffff;
   color: var(--black);
   overflow: hidden;
@@ -343,37 +398,39 @@ button {
 .archive-toolbar {
   position: relative;
   z-index: 6;
-  min-height: 112px;
+  min-height: 132px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 24px;
+  gap: 40px;
   border-bottom: 0;
+  padding: 0 48px;
 }
 
 .archive-intro {
-  width: min(390px, 48vw);
-  margin-left: 176px;
+  width: min(680px, 58vw);
+  margin-left: 96px;
 }
 
 .archive-intro p {
   margin: 0;
   color: #050505;
   font-family: "Inter", Arial, Helvetica, sans-serif;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 300;
-  line-height: 1.12;
+  line-height: 1.15;
 }
 
 .archive-actions {
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
-  gap: 34px;
-  padding-top: 12px;
+  gap: 58px;
+  padding-top: 8px;
 }
 
-.archive-magazine {
+.archive-magazine,
+.archive-link {
   color: #050505;
   font-family: "Inter", Arial, Helvetica, sans-serif;
   font-size: 14px;
@@ -385,7 +442,7 @@ button {
 
 .archive-search {
   position: relative;
-  width: 160px;
+  width: 84px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -440,18 +497,18 @@ button {
 
 .wall-stage {
   position: relative;
-  min-height: calc(100% - 112px);
-  overflow-x: auto;
+  min-height: calc(100% - 132px);
+  overflow: hidden;
   overflow-y: hidden;
   background: #ffffff;
 }
 
 .wall-center {
   position: absolute;
-  left: 30px;
-  top: -2px;
+  left: 48px;
+  top: -8px;
   z-index: 7;
-  width: 68px;
+  width: 84px;
   aspect-ratio: 1;
   display: grid;
   place-items: center;
@@ -470,16 +527,24 @@ button {
   inset: auto 0 0;
   z-index: 2;
   min-width: max-content;
-  height: min(62vh, 410px);
+  height: min(64vh, 460px);
   display: flex;
   align-items: flex-end;
-  gap: 10px;
+  gap: 12px;
   padding: 0 0 0;
+  animation: articleCycle 58s linear infinite;
+  will-change: transform;
+}
+
+.wall-stage:hover .article-list,
+.archive-wall:focus-within .article-list,
+.article-list.is-filtering {
+  animation-play-state: paused;
 }
 
 .article-card {
   position: relative;
-  width: clamp(190px, 22vw, 300px);
+  width: clamp(290px, 23vw, 390px);
   height: var(--tile-h);
   display: flex;
   flex-direction: column;
@@ -563,6 +628,25 @@ button {
 .article-card.is-loading {
   opacity: 0.32;
   pointer-events: none;
+}
+
+@keyframes articleCycle {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-intro,
+  .site-intro-outline,
+  .site-intro-fill,
+  .article-list {
+    animation: none;
+  }
+
+  .site-intro {
+    display: none;
+  }
 }
 
 
@@ -811,6 +895,7 @@ button {
   }
 
   .archive-magazine,
+  .archive-link,
   .archive-search span,
   .archive-search input {
     font-size: 11px;

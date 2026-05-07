@@ -188,7 +188,7 @@ function renderArticles(articles) {
 
   articleList.innerHTML = "";
 
-  articles.forEach((article, index) => {
+  function createArticleCard(article, index) {
     const card = document.createElement("button");
     const title = document.createElement("h3");
     const image = document.createElement("img");
@@ -222,12 +222,24 @@ function renderArticles(articles) {
       showArticleLoadingTransition(article);
     });
 
+    return card;
+  }
+
+  articles.forEach((article, index) => {
+    const card = createArticleCard(article, index);
+    articleList.appendChild(card);
+  });
+
+  articles.forEach((article, index) => {
+    const card = createArticleCard(article, index);
+    card.setAttribute("aria-hidden", "true");
     articleList.appendChild(card);
   });
 
   if (searchInput) {
     searchInput.addEventListener("input", () => {
       const query = searchInput.value.trim().toLowerCase();
+      articleList.classList.toggle("is-filtering", Boolean(query));
 
       articleList.querySelectorAll(".article-card").forEach((card) => {
         card.classList.toggle("is-hidden", query && !card.dataset.search.includes(query));
@@ -282,6 +294,17 @@ async function loadArticles() {
 loadArticles();
 
 window.addEventListener("DOMContentLoaded", () => {
+  const siteIntro = document.querySelector("#siteIntro");
+
+  if (siteIntro) {
+    document.body.classList.add("is-intro-playing");
+
+    window.setTimeout(() => {
+      document.body.classList.remove("is-intro-playing");
+      document.body.classList.add("intro-complete");
+    }, 3700);
+  }
+
   const section = document.querySelector("#heroStickySection");
   const rightPanel = document.querySelector(".hero-right");
   const microBar = document.querySelector(".micro-bar");
