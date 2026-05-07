@@ -25,28 +25,46 @@ const fallbackArticles = [
   {
     title: "The Overview",
     keywords: ["climate", "earth", "visual"],
+    image: "images/0410_theoverview.jpg",
     url: "https://atmos.earth/"
   },
   {
     title: "As The Crow Flies",
     keywords: ["migration", "landscape"],
+    image: "images/as-the-crow-flies.jpg",
     url: "https://atmos.earth/"
   },
   {
     title: "Climate Disasters Are Not Natural",
     keywords: ["climate", "disaster"],
+    image: "images/0401_fema_climatedisasters.jpg",
     url: "https://atmos.earth/"
   },
   {
     title: "Border Wall Big Bend",
     keywords: ["border", "ecology"],
+    image: "images/0408_borderwall_bigbend.jpg",
     url: "https://atmos.earth/"
   },
   {
     title: "National Security Drilling",
     keywords: ["energy", "politics"],
+    image: "images/0415_nationalsecurity_drilling.jpg",
     url: "https://atmos.earth/"
   }
+];
+
+const fallbackImages = [
+  "images/0410_theoverview.jpg",
+  "images/as-the-crow-flies.jpg",
+  "images/0401_fema_climatedisasters.jpg",
+  "images/0408_borderwall_bigbend.jpg",
+  "images/0415_nationalsecurity_drilling.jpg",
+  "images/0422_earthday_science.jpg",
+  "images/0429_gunmakers_fossilfuel.jpg",
+  "images/mimicry-flower-main.jpg",
+  "images/processual-biology.jpg",
+  "images/rainbow.jpg"
 ];
 
 const wallPositions = [
@@ -89,7 +107,7 @@ function getArticleLogo(article, index = 0) {
   return article.logoId || article.logo || article.logoImage || buildLogoVariant(article, index);
 }
 
-function getArticleImage(article) {
+function getArticleImage(article, index = 0) {
   return (
     article.image?.url ||
     article.image?.src ||
@@ -101,28 +119,9 @@ function getArticleImage(article) {
     article.thumbnail ||
     article.thumbnailUrl ||
     article.heroImage ||
-    article.photo
+    article.photo ||
+    fallbackImages[index % fallbackImages.length]
   );
-}
-
-function buildImagePlaceholder(article, index = 0) {
-  const palettes = [
-    ["#d9652b", "#f4b34f", "#2d3b2d"],
-    ["#b9d5d7", "#f0eee2", "#e45a2a"],
-    ["#b7c6ad", "#e8e2ca", "#5f6f56"],
-    ["#d7dfe0", "#8eb5c8", "#273b4f"],
-    ["#e0d1bf", "#1f1f1f", "#a44f3f"],
-    ["#cbd9c3", "#f5f0d8", "#5c7b6a"]
-  ];
-  const palette = palettes[index % palettes.length];
-  const title = article.title || "Reading Atmos";
-  const seed = Array.from(title).reduce((total, char) => total + char.charCodeAt(0), index);
-  const cx = 25 + (seed % 48);
-  const cy = 28 + (seed % 34);
-  const r = 22 + (seed % 18);
-  const svg = `<svg viewBox="0 0 420 560" xmlns="http://www.w3.org/2000/svg"><rect width="420" height="560" fill="${palette[0]}"/><rect y="300" width="420" height="260" fill="${palette[1]}" opacity=".78"/><circle cx="${cx * 4}" cy="${cy * 4}" r="${r * 3}" fill="${palette[2]}" opacity=".72"/><circle cx="${(cx + 34) * 3}" cy="${(cy + 28) * 3}" r="${r * 2.4}" fill="#fff" opacity=".34"/><path d="M0 430 C90 366 152 474 246 398 C318 338 360 384 420 350 L420 560 L0 560Z" fill="#111" opacity=".22"/><path d="M132 238 C168 178 236 178 270 238 C234 214 170 214 132 238Z" fill="#fff" opacity=".48"/></svg>`;
-
-  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
 }
 
 function setWallVisual(article, index = 0) {
@@ -190,10 +189,10 @@ function renderArticles(articles) {
     title.textContent = article.title || "Untitled article";
     image.alt = "";
     image.loading = "lazy";
-    image.src = getArticleImage(article) || buildImagePlaceholder(article, index);
+    image.src = getArticleImage(article, index);
     image.onerror = () => {
       image.onerror = null;
-      image.src = buildImagePlaceholder(article, index);
+      image.src = fallbackImages[index % fallbackImages.length];
     };
 
     card.appendChild(title);
