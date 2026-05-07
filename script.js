@@ -107,8 +107,31 @@ function getArticleLogo(article, index = 0) {
   return article.logoId || article.logo || article.logoImage || buildLogoVariant(article, index);
 }
 
+function getImageValue(value) {
+  if (Array.isArray(value)) {
+    return value[0];
+  }
+
+  if (value && typeof value === "object") {
+    return value.url || value.src || value.path || value.file;
+  }
+
+  return value;
+}
+
 function getArticleImage(article, index = 0) {
+  const imageValue =
+    getImageValue(article.images) ||
+    getImageValue(article.image) ||
+    getImageValue(article.imageUrl) ||
+    getImageValue(article.imageSrc) ||
+    getImageValue(article.thumbnail) ||
+    getImageValue(article.thumbnailUrl) ||
+    getImageValue(article.heroImage) ||
+    getImageValue(article.photo);
+
   return (
+    imageValue ||
     article.image?.url ||
     article.image?.src ||
     article.thumbnail?.url ||
@@ -119,7 +142,6 @@ function getArticleImage(article, index = 0) {
     article.thumbnail ||
     article.thumbnailUrl ||
     article.heroImage ||
-    article.photo ||
     fallbackImages[index % fallbackImages.length]
   );
 }
