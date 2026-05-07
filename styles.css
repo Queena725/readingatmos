@@ -599,17 +599,18 @@ body.intro-complete .site-intro {
 .wall-center {
   position: absolute;
   left: 48px;
-  top: -8px;
+  top: 16px;
   z-index: 7;
-  width: 84px;
+  width: 118px;
   aspect-ratio: 1;
   display: grid;
   place-items: center;
+  overflow: visible;
 }
 
 .wall-center img {
-  width: 100%;
-  height: 100%;
+  width: 72%;
+  height: 72%;
   object-fit: contain;
   filter: grayscale(1) brightness(0) contrast(999);
   transition: none;
@@ -1036,7 +1037,8 @@ body.intro-complete .site-intro {
 
   .wall-center {
     left: 14px;
-    width: 64px;
+    top: 18px;
+    width: 86px;
   }
 
   .article-list {
