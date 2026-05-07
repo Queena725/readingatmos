@@ -79,6 +79,14 @@ body {
   padding-top: var(--topbar-h);
 }
 
+.archive-body {
+  padding-top: 0;
+}
+
+.archive-body .topbar {
+  display: none;
+}
+
 img {
   display: block;
   max-width: 100%;
@@ -324,9 +332,9 @@ button {
 
 /* ARCHIVE WALL */
 .archive-wall {
-  height: calc(100vh - var(--topbar-h));
+  height: 100vh;
   min-height: 620px;
-  padding: 14px 18px 12px;
+  padding: 30px 18px 12px;
   background: #f8f8f6;
   color: var(--black);
   overflow: hidden;
@@ -335,7 +343,7 @@ button {
 .archive-toolbar {
   position: relative;
   z-index: 6;
-  min-height: 74px;
+  min-height: 112px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -345,7 +353,7 @@ button {
 
 .archive-intro {
   width: min(420px, 52vw);
-  margin-left: 82px;
+  margin-left: 172px;
 }
 
 .archive-intro p {
@@ -392,7 +400,7 @@ button {
 
 .wall-stage {
   position: relative;
-  min-height: calc(100% - 74px);
+  min-height: calc(100% - 112px);
   overflow-x: auto;
   overflow-y: hidden;
   background: #f8f8f6;
@@ -400,13 +408,13 @@ button {
 
 .wall-center {
   position: absolute;
-  inset: 38% auto auto 50%;
-  z-index: 4;
-  width: clamp(88px, 11vw, 150px);
+  left: 28px;
+  top: 0;
+  z-index: 7;
+  width: 74px;
   aspect-ratio: 1;
   display: grid;
   place-items: center;
-  transform: translate(-50%, -50%);
   mix-blend-mode: multiply;
 }
 
@@ -433,7 +441,7 @@ button {
   display: flex;
   align-items: flex-end;
   gap: 8px;
-  padding: 0 0 10px;
+  padding: 0 0 0;
 }
 
 .article-card {
@@ -452,7 +460,6 @@ button {
   padding: 0;
   text-align: left;
   opacity: 0.94;
-  transform: translateY(calc(-1 * var(--lift)));
   transition: opacity 0.22s ease, transform 0.22s ease, filter 0.22s ease;
 }
 
@@ -467,7 +474,7 @@ button {
   z-index: 2;
   max-width: 86%;
   color: #111;
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 600;
   line-height: 1;
   letter-spacing: 0;
@@ -475,10 +482,6 @@ button {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.article-card h3::before {
-  content: "+ ";
 }
 
 .article-card img {
@@ -497,7 +500,7 @@ button {
   background: transparent;
   opacity: 1;
   outline: 0;
-  transform: translateY(calc(-1 * var(--lift) - 8px));
+  transform: translateY(-8px);
 }
 
 .article-card:hover img,
@@ -686,7 +689,7 @@ button {
 
   .archive-wall {
     height: auto;
-    min-height: calc(100vh - var(--topbar-h));
+    min-height: 100vh;
     padding-inline: 20px;
   }
 
@@ -757,7 +760,7 @@ button {
 
   .archive-intro {
     width: 100%;
-    margin-left: 0;
+    margin-left: 92px;
   }
 
   .wall-stage {
@@ -765,7 +768,8 @@ button {
   }
 
   .wall-center {
-    width: 94px;
+    left: 14px;
+    width: 64px;
   }
 
   .article-list {
@@ -779,7 +783,7 @@ button {
   }
 
   .article-card h3 {
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .project-meta,

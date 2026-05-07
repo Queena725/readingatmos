@@ -50,18 +50,18 @@ const fallbackArticles = [
 ];
 
 const wallPositions = [
-  [260, 0],
-  [190, 84],
-  [300, 28],
-  [236, 72],
-  [176, 18],
-  [280, 96],
-  [210, 38],
-  [318, 68],
-  [186, 10],
-  [250, 88],
-  [292, 46],
-  [204, 70]
+  [270],
+  [300],
+  [210],
+  [320],
+  [250],
+  [285],
+  [230],
+  [310],
+  [205],
+  [265],
+  [295],
+  [235]
 ];
 
 function buildLogoVariant(article, index = 0) {
@@ -162,7 +162,6 @@ function applyWallPosition(card, index) {
   const position = wallPositions[index % wallPositions.length];
 
   card.style.setProperty("--tile-h", `${position[0]}px`);
-  card.style.setProperty("--lift", `${position[1]}px`);
 }
 
 function renderArticles(articles) {
