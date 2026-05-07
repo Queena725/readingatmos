@@ -83,6 +83,10 @@ body {
   padding-top: 0;
 }
 
+.home-body {
+  padding-top: 0;
+}
+
 body.is-intro-playing {
   overflow: hidden;
 }
@@ -203,6 +207,38 @@ body.intro-complete .site-intro {
 
 .topbar-nav button {
   font-size: 20px;
+}
+
+.home-body .topbar {
+  background: transparent;
+  border-bottom: 0;
+}
+
+.home-body .topbar-inner {
+  padding: 0 32px;
+  align-items: flex-start;
+}
+
+.home-body .topbar-left {
+  padding-top: 18px;
+}
+
+.home-body .topbar-logo img {
+  width: 42px;
+}
+
+.home-body .topbar-nav {
+  width: 30vw;
+  min-width: 360px;
+  height: var(--topbar-h);
+  margin-left: auto;
+  padding: 24px 24px 0 28px;
+  justify-content: space-between;
+  gap: 28px;
+  color: #050505;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 300;
 }
 
 /* HERO */
