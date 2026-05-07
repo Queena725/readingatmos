@@ -176,6 +176,38 @@ function applyWallPosition(card, index) {
   card.style.setProperty("--tile-h", `${position[0]}px`);
 }
 
+function getArticleCategory(article) {
+  const value = article.category || article.categories || article.topic || article.type;
+
+  if (Array.isArray(value)) {
+    return value.filter(Boolean).join(", ");
+  }
+
+  return value || "";
+}
+
+function getArticleSummary(article) {
+  return (
+    article.summary ||
+    article.description ||
+    article.excerpt ||
+    article.abstract ||
+    article.dek ||
+    article.subtitle ||
+    ""
+  );
+}
+
+function setArchiveHoverMeta(article) {
+  const categoryTarget = document.querySelector("#archiveHoverCategory");
+  const summaryTarget = document.querySelector("#archiveHoverSummary");
+
+  if (!categoryTarget || !summaryTarget) return;
+
+  categoryTarget.textContent = article ? getArticleCategory(article) : "";
+  summaryTarget.textContent = article ? getArticleSummary(article) : "";
+}
+
 function renderArticles(articles) {
   const articleList = document.querySelector("#articleList");
   const searchInput = document.querySelector("#articleSearch");
@@ -211,8 +243,14 @@ function renderArticles(articles) {
     card.appendChild(title);
     card.appendChild(image);
 
-    card.addEventListener("mouseenter", () => setWallVisual(article, index));
-    card.addEventListener("focus", () => setWallVisual(article, index));
+    card.addEventListener("mouseenter", () => {
+      setWallVisual(article, index);
+      setArchiveHoverMeta(article);
+    });
+    card.addEventListener("focus", () => {
+      setWallVisual(article, index);
+      setArchiveHoverMeta(article);
+    });
 
     card.addEventListener("click", () => {
       console.log("Logo mood:", article.logoMood);

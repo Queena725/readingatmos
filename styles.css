@@ -596,6 +596,34 @@ body.intro-complete .site-intro {
   background: #ffffff;
 }
 
+.archive-hover-meta {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  color: #050505;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.12;
+}
+
+.archive-hover-category {
+  position: absolute;
+  left: 48px;
+  top: 154px;
+  width: 180px;
+  margin: 0;
+}
+
+.archive-hover-summary {
+  position: absolute;
+  right: 48px;
+  top: 126px;
+  width: min(300px, 20vw);
+  margin: 0;
+}
+
 .wall-center {
   position: absolute;
   left: 48px;
@@ -702,8 +730,8 @@ body.intro-complete .site-intro {
 
 .article-card:hover h3,
 .article-card:focus-visible h3 {
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 0;
+  transform: translateY(3px);
 }
 
 .article-card:hover img,
@@ -1029,6 +1057,11 @@ body.intro-complete .site-intro {
 
   .archive-search:focus-within input {
     width: 96px;
+  }
+
+  .archive-hover-category,
+  .archive-hover-summary {
+    display: none;
   }
 
   .wall-stage {
