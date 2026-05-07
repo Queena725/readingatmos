@@ -359,13 +359,11 @@ button {
 
 .archive-search {
   position: relative;
-  width: 230px;
+  width: 160px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 48px;
   padding-top: 12px;
-  padding-right: 30px;
   cursor: text;
 }
 
@@ -377,55 +375,38 @@ button {
   line-height: 1;
   text-transform: lowercase;
   white-space: nowrap;
+  transition: opacity 0.16s ease;
 }
 
-.archive-search::before {
-  content: "";
-  position: absolute;
-  right: 4px;
-  top: 9px;
-  width: 11px;
-  height: 11px;
-  border: 1.5px solid #050505;
-  border-radius: 50%;
-}
-
-.archive-search::after {
-  content: "";
-  position: absolute;
-  right: 1px;
-  top: 20px;
-  width: 7px;
-  height: 1.5px;
-  background: #050505;
-  transform: rotate(45deg);
-  transform-origin: left center;
+.archive-search:focus-within span {
+  opacity: 0;
 }
 
 .archive-search input {
   position: absolute;
-  right: 28px;
-  top: 34px;
+  right: 0;
+  top: 8px;
   width: 0;
-  border: 1px solid #111;
+  border: 0;
+  border-bottom: 1px solid #111;
   border-radius: 0;
   background: #ffffff;
   color: var(--black);
   font: inherit;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 300;
   outline: none;
   opacity: 0;
   pointer-events: none;
-  padding: 4px 0;
+  padding: 0 0 3px;
   transition: opacity 0.16s ease, padding 0.16s ease, width 0.16s ease;
 }
 
 .archive-search:focus-within input {
-  width: 150px;
+  width: 160px;
   opacity: 1;
   pointer-events: auto;
-  padding: 4px 6px;
+  padding: 0 0 3px;
 }
 
 .archive-search input::placeholder {
@@ -471,7 +452,7 @@ button {
   inset: auto 0 0;
   z-index: 2;
   min-width: max-content;
-  height: min(50vh, 330px);
+  height: min(62vh, 410px);
   display: flex;
   align-items: flex-end;
   gap: 10px;
@@ -480,7 +461,7 @@ button {
 
 .article-card {
   position: relative;
-  width: clamp(150px, 18vw, 236px);
+  width: clamp(190px, 22vw, 300px);
   height: var(--tile-h);
   display: flex;
   flex-direction: column;
@@ -517,6 +498,9 @@ button {
   white-space: nowrap;
   overflow: visible;
   text-overflow: clip;
+  opacity: 0;
+  transform: translateY(3px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
 }
 
 .article-card img {
@@ -536,6 +520,12 @@ button {
   opacity: 1;
   outline: 0;
   transform: translateY(-8px);
+}
+
+.article-card:hover h3,
+.article-card:focus-visible h3 {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .article-card:hover img,
@@ -801,8 +791,6 @@ button {
   .archive-search {
     width: 100%;
     justify-content: flex-start;
-    gap: 20px;
-    padding-right: 30px;
   }
 
   .wall-stage {
@@ -815,13 +803,13 @@ button {
   }
 
   .article-list {
-    height: 390px;
+    height: 450px;
     gap: 7px;
   }
 
   .article-card {
-    width: 150px;
-    height: min(var(--tile-h), 260px);
+    width: 190px;
+    height: min(var(--tile-h), 330px);
   }
 
   .article-card h3 {
