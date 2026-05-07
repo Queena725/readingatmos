@@ -79,6 +79,10 @@ body {
   padding-top: var(--topbar-h);
 }
 
+.archive-body {
+  padding-top: 0;
+}
+
 img {
   display: block;
   max-width: 100%;
@@ -103,6 +107,10 @@ button {
 
 .archive-page {
   background: #ffffff;
+}
+
+.archive-body .topbar {
+  display: none;
 }
 
 /* TOPBAR */
@@ -324,7 +332,7 @@ button {
 
 /* ARCHIVE WALL */
 .archive-wall {
-  height: calc(100vh - var(--topbar-h));
+  height: 100vh;
   min-height: 620px;
   padding: 28px 16px 14px;
   background: #ffffff;
@@ -357,13 +365,30 @@ button {
   line-height: 1.12;
 }
 
+.archive-actions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 34px;
+  padding-top: 12px;
+}
+
+.archive-magazine {
+  color: #050505;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1;
+  text-transform: lowercase;
+  white-space: nowrap;
+}
+
 .archive-search {
   position: relative;
   width: 160px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding-top: 12px;
   cursor: text;
 }
 
@@ -781,9 +806,23 @@ button {
     margin-left: 92px;
   }
 
+  .archive-actions {
+    gap: 18px;
+  }
+
+  .archive-magazine,
+  .archive-search span,
+  .archive-search input {
+    font-size: 11px;
+  }
+
   .archive-search {
-    width: 100%;
+    width: 96px;
     justify-content: flex-start;
+  }
+
+  .archive-search:focus-within input {
+    width: 96px;
   }
 
   .wall-stage {

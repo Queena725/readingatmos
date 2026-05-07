@@ -13,21 +13,6 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="archive-body">
-    <header class="topbar">
-      <div class="topbar-inner">
-        <div class="topbar-left">
-          <a class="topbar-logo" href="index.html" aria-label="Reading Atmos home">
-            <img src="data:image/svg+xml,%3Csvg viewBox='0 0 318 303' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M258.737 243.684C248.931 166.791 229.591.501 172.983.5 116.374.499 96.231 141.984 74.659 237.941 53.086 333.898-30.091 308.403 29.281 231.917 88.653 155.432 258.737 160.696 303.844 237.941 348.951 315.186 268.543 320.578 258.737 243.684Z' fill='none' stroke='black' stroke-width='4'/%3E%3Cpath d='M103.805 106.472C181.432-57.303 237.164 110.325 237.164 110.325S218 3 173.746.5C129.558-1.996 108.095 88.404 103.824 106.39Z' fill='black'/%3E%3Cpath d='M260 248.5C273.5 334.5 350.5 309.5 302 236c35.301 58.835-26 68.5-42 12.5Z' fill='black'/%3E%3Cpath d='M68.775 256.196C41.319 332.681-33.477 300.558 37.125 224.073-6.021 275.063 43.28 309.147 68.775 256.196Z' fill='black'/%3E%3C/svg%3E" alt="Atmos logo" />
-          </a>
-        </div>
-
-        <nav class="topbar-nav">
-          <a href="https://atmos.earth/" target="_blank" rel="noopener noreferrer">atmos magazine</a>
-          <a href="archive.html" aria-current="page">Archive</a>
-        </nav>
-      </div>
-    </header>
-
     <main class="page archive-page">
       <section class="archive-wall" id="archiveWall" aria-label="Atmos article index">
         <div class="archive-toolbar">
@@ -45,15 +30,25 @@
               to see how each article shifts the central mark.
             </p>
           </div>
-          <label class="archive-search" aria-label="Search archive">
-            <span>search</span>
-            <input
-              id="articleSearch"
-              type="search"
-              autocomplete="off"
-              placeholder="Search"
-            />
-          </label>
+          <div class="archive-actions">
+            <a
+              class="archive-magazine"
+              href="https://atmos.earth/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              atmos magazine
+            </a>
+            <label class="archive-search" aria-label="Search archive">
+              <span>search</span>
+              <input
+                id="articleSearch"
+                type="search"
+                autocomplete="off"
+                placeholder="Search"
+              />
+            </label>
+          </div>
         </div>
 
         <div class="wall-stage">
