@@ -730,8 +730,8 @@ body.intro-complete .site-intro {
 
 .article-card:hover h3,
 .article-card:focus-visible h3 {
-  opacity: 0;
-  transform: translateY(3px);
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .article-card:hover img,
