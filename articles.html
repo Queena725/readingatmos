@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Atmos Reading Articles</title>
-  <link rel="stylesheet" href="./articles.css?v=20260502-5" />
+  <link rel="stylesheet" href="./articles.css?v=20260506-3" />
 </head>
 
 <body>
@@ -21,7 +21,6 @@
     <div class="site-topbar-right">
       <a href="./index.html" class="site-home-link">home</a>
       <a href="./articles.html" class="site-archive-link">archive</a>
-      <a href="./trace.html" class="site-trace-link">trace</a>
     </div>
   </nav>
 
@@ -58,6 +57,14 @@
     </section>
   </main>
 
-  <script type="module" src="./articles.js?v=20260502-5"></script>
+  <div
+    class="article-loading-overlay"
+    id="articleLoadingOverlay"
+    aria-hidden="true"
+  >
+    <div class="article-loading-logo" id="articleLoadingLogo" aria-hidden="true"></div>
+  </div>
+
+  <script type="module" src="./articles.js?v=20260506-3"></script>
 </body>
 </html>
