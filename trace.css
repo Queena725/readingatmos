@@ -1,0 +1,526 @@
+:root {
+  --black: #070100;
+  --text: #333333;
+  --muted: #787878;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  background: #ffffff;
+  color: var(--text);
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+}
+
+.traces-body {
+  background: #ffffff;
+  color: var(--black);
+}
+
+.archive-toolbar {
+  position: relative;
+  z-index: 6;
+  min-height: 132px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+  border-bottom: 0;
+  padding: 44px 48px 0;
+}
+
+.wall-center {
+  position: absolute;
+  left: 48px;
+  top: 36px;
+  z-index: 7;
+  width: 84px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  overflow: visible;
+}
+
+.wall-center img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: grayscale(1) brightness(0) contrast(999);
+}
+
+.archive-intro {
+  width: min(600px, 44vw);
+  margin-left: 96px;
+}
+
+.archive-intro p {
+  margin: 0;
+  color: #050505;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.15;
+}
+
+.archive-actions {
+  min-width: min(440px, 34vw);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 64px;
+  padding-top: 8px;
+}
+
+.archive-actions a,
+.archive-search span,
+.archive-search input {
+  color: #050505;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1;
+  text-transform: lowercase;
+  white-space: nowrap;
+}
+
+.archive-search {
+  position: relative;
+  width: 84px;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  cursor: text;
+}
+
+.archive-search span {
+  transition: opacity 0.16s ease;
+}
+
+.archive-search:focus-within span {
+  opacity: 0;
+}
+
+.archive-search input {
+  position: absolute;
+  right: 0;
+  top: 8px;
+  width: 0;
+  border: 0;
+  border-bottom: 1px solid #111111;
+  border-radius: 0;
+  background: #ffffff;
+  font: inherit;
+  outline: 0;
+  opacity: 0;
+  pointer-events: none;
+  padding: 0 0 3px;
+  transition: opacity 0.16s ease, padding 0.16s ease, width 0.16s ease;
+}
+
+.archive-search:focus-within input {
+  width: 160px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.traces-index {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 42px 48px 96px;
+  background: #ffffff;
+}
+
+.trace-glossary-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-left: 0;
+  padding-bottom: 48px;
+}
+
+.trace-glossary-filter {
+  border: 1px solid rgba(7, 1, 0, 0.16);
+  background: transparent;
+  color: #050505;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1;
+  padding: 11px 14px;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.trace-glossary-filter.is-active,
+.trace-glossary-filter:hover,
+.trace-glossary-filter:focus-visible {
+  border-color: #050505;
+  background: #050505;
+  color: #ffffff;
+  outline: 0;
+}
+
+.trace-glossary-list {
+  border-top: 0;
+}
+
+.trace-glossary-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.18fr) minmax(0, 1fr);
+  gap: clamp(36px, 6vw, 112px);
+  align-items: baseline;
+  border-bottom: 1px solid rgba(7, 1, 0, 0.16);
+  padding: 26px 0 30px;
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+
+.trace-glossary-row[hidden] {
+  display: none;
+}
+
+.trace-glossary-row:hover {
+  border-color: rgba(7, 1, 0, 0.36);
+  transform: translateX(8px);
+}
+
+.trace-glossary-meta {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 18px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 300;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.trace-glossary-entry {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.34fr) minmax(320px, 0.66fr);
+  gap: clamp(28px, 5vw, 78px);
+  align-items: baseline;
+}
+
+.trace-glossary-entry h2 {
+  color: #050505;
+  font-size: clamp(30px, 3.5vw, 52px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  transition: transform 0.18s ease;
+}
+
+.trace-glossary-row:hover .trace-glossary-entry h2 {
+  transform: translateX(4px);
+}
+
+.trace-glossary-entry p {
+  max-width: 720px;
+  color: #333333;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.15;
+}
+
+.source-note {
+  max-width: 720px;
+  margin-top: 34px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.35;
+}
+
+.source-note a {
+  color: #050505;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+  .archive-toolbar {
+    min-height: 0;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 18px;
+    padding: 18px 18px 18px;
+  }
+
+  .wall-center {
+    left: 18px;
+    top: 10px;
+    width: 52px;
+  }
+
+  .archive-intro {
+    width: calc(100% - 86px);
+    margin-left: 74px;
+  }
+
+  .archive-actions {
+    min-width: 0;
+    gap: 18px;
+    justify-content: space-between;
+  }
+
+  .archive-actions a,
+  .archive-search span,
+  .archive-search input {
+    font-size: 11px;
+  }
+
+  .archive-search {
+    width: 96px;
+    margin-right: 0;
+    justify-content: flex-start;
+  }
+
+  .archive-search:focus-within input {
+    width: 96px;
+  }
+
+  .traces-index {
+    padding: 28px 18px 64px;
+  }
+
+  .trace-glossary-controls {
+    gap: 8px;
+    padding-bottom: 32px;
+  }
+
+  .trace-glossary-filter {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+
+  .trace-glossary-row {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 28px 0 30px;
+  }
+
+  .trace-glossary-row:hover {
+    transform: none;
+  }
+
+  .trace-glossary-meta {
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 12px;
+    font-size: 11px;
+  }
+
+  .trace-glossary-entry {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .trace-glossary-entry h2 {
+    font-size: 30px;
+  }
+
+  .trace-glossary-entry p {
+    font-size: 14px;
+    line-height: 1.15;
+  }
+}
+
+.trace-section-title {
+  margin: 52px 0 18px;
+  color: #050505;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.trace-glossary-list[hidden] {
+  display: none;
+}
+
+.trace-glossary-entry p {
+  opacity: 0.32;
+  transform: translateY(2px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.trace-glossary-row:hover .trace-glossary-entry p,
+.trace-glossary-row:focus-within .trace-glossary-entry p {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .trace-glossary-entry p {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.trace-glossary-controls {
+  gap: 14px;
+}
+
+.trace-glossary-filter {
+  border-radius: 999px;
+  min-height: 56px;
+  font-size: 20px;
+  padding: 0 34px;
+}
+
+@media (max-width: 768px) {
+  .trace-glossary-controls {
+    gap: 8px;
+  }
+
+  .trace-glossary-filter {
+    min-height: 44px;
+    font-size: 14px;
+    padding: 0 18px;
+  }
+}
+
+.trace-compact-list {
+  border-top: 1px solid rgba(7, 1, 0, 0.18);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 56px;
+}
+
+.trace-compact-item {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.4fr) minmax(0, 0.6fr);
+  gap: 28px;
+  align-items: baseline;
+  border-bottom: 1px solid rgba(7, 1, 0, 0.12);
+  padding: 18px 0;
+}
+
+.trace-compact-item[hidden] {
+  display: none;
+}
+
+.trace-compact-item h2,
+.trace-compact-item h3 {
+  color: #050505;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.trace-compact-item p {
+  min-width: 0;
+  max-width: 720px;
+  color: #333333;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.15;
+  opacity: 0.32;
+  transform: translateY(2px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.trace-compact-item:hover p,
+.trace-compact-item:focus-within p {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.trace-care-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.trace-care-card {
+  min-height: 156px;
+  border-top: 1px solid rgba(7, 1, 0, 0.18);
+  padding-top: 18px;
+}
+
+.trace-care-card[hidden] {
+  display: none;
+}
+
+.trace-care-card h2,
+.trace-care-card h3 {
+  color: #050505;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.12;
+}
+
+.trace-care-card p {
+  margin-top: 18px;
+  color: #333333;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.22;
+  opacity: 0.32;
+  transform: translateY(2px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.trace-care-card:hover p,
+.trace-care-card:focus-within p {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .trace-compact-list {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+
+  .trace-compact-item {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .trace-compact-item p {
+    opacity: 1;
+    transform: none;
+  }
+
+  .trace-care-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .trace-care-card p {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.trace-glossary-controls {
+  gap: 10px;
+}
+
+.trace-glossary-filter {
+  min-height: 38px;
+  font-size: 13px;
+  padding: 0 18px;
+}
+
+@media (max-width: 768px) {
+  .trace-glossary-filter {
+    min-height: 36px;
+    font-size: 12px;
+    padding: 0 14px;
+  }
+}
